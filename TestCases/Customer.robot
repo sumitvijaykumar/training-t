@@ -8,7 +8,7 @@ TC-001 Verify if a user is able to filter bus according to their seat preference
     Get All Bus Price and verify
     
 
-TC-002 Verify if a user is able to filter bus according to their preference
+TC-002 Verify if a user is able to filter bus according to Travel Operator
 
     Connect To Browser
     Enter MakeMyTrip Link
@@ -23,10 +23,14 @@ TC-004 Verify if a user is able to filter bus according to their drop point
     Search Buses    Coimbatore    Thiruvananthapuram
     Select Filter    Drop point     Pattam   
     Verify Filter    Pattam  
-
-TC-006 Verify the departure date of buses should be same as entered
+TC-003 Verify if a user is able to filter bus according to their seat preference
+    
     Open Make My Trip As
-    Search Buses    ${from}    ${to}    ${date}    ${month}
-    ${allBusDate}    ${numberOfBuses}    Get All Bus Date
-    ${inputDate}    Get Input Date
-    Validating Data    ${allBusDate}    ${numberOfBuses}    ${inputDate}
+    Search Buses    ${from}    ${to}    #${date}
+    Select Filter     Seat type     Sleeper
+    Get All Bus Id    Seat type     Sleeper
+TC-005 Verify if a user is able to filter bus according to ac and non ac
+   Search bus    Coimbatore   Trivandrum    
+   Select filter  AC  Non AC
+   Get all bus   Non A/C
+   Verify filter
