@@ -29,3 +29,8 @@ TC-003 Verify if a user is able to filter bus according to their seat preference
     Search Buses    ${from}    ${to}    #${date}
     Select Filter     Seat type     Sleeper
     Get All Bus Id    Seat type     Sleeper
+TC-005 Verify if a user is able to filter bus according to ac and non ac
+   Search bus    Coimbatore   Trivandrum    
+   Select filter  AC  Non AC
+   Get all bus   Non A/C
+   Verify filter
