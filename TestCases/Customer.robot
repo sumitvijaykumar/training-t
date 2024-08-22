@@ -17,3 +17,9 @@ TC-002 Verify if a user is able to filter bus according to their preference
     Get filtered Bus Name    Travel Operators     A1 Travels
     Verify Busname    Travel Operators     A1 Travels    ${allBusName}
     Initial condition   Travel Operators
+
+TC-004 Verify if a user is able to filter bus according to their drop point
+    Open Make My Trip As
+    Search Buses    Coimbatore    Thiruvananthapuram
+    Select Filter    Drop point     Pattam   
+    Verify Filter    Pattam  
