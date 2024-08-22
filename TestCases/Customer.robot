@@ -17,3 +17,10 @@ TC-002 Verify if a user is able to filter bus according to their preference
     Get filtered Bus Name    Travel Operators     A1 Travels
     Verify Busname    Travel Operators     A1 Travels    ${allBusName}
     Initial condition   Travel Operators
+
+TC-007 Verify if a user is able to filter bus according to their ratings
+    Open Make My Trip As
+    Search Buses    ${from}    ${to}    ${date}
+    Get All Bus Rating
+    Get Top Rated Bus
+    Check If Ratings Are Equal    ${last_element}    ${top_rating}
