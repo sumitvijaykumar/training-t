@@ -228,3 +228,19 @@ Verify drop point
     # Should Be Equal As Numbers    ${numberOfBuscard}    ${finalcount}
     # Should Be Equal    ${numberOfBuscard}    ${count}
     Sleep    3s
+
+
+Get All Bus Id
+    [Arguments]     ${filterType}     ${filterExactText}
+    @{allBusId}    Create List
+    Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${busId}     Get Element Attribute       (//div[starts-with(@id,"bus_")])[${index}]        id  # node with id in it, exact 16 matches.
+    Append To List     ${allBusId}    ${busId}
+    END
+    Log    ${allBusId}
+    Click Element     toggle_buses
+    [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+    Sleep    5s
