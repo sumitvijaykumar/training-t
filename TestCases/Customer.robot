@@ -69,3 +69,8 @@ TC-009 Verify the departure date of buses should be same as entered
     ${allBusDate}    ${numberOfBuses}    Get All Bus Date
     ${inputDate}    Get Input Date
     Validating Data    ${allBusDate}    ${numberOfBuses}    ${inputDate}
+
+TC-010 Verify Initial toggle to shortest duration
+    Open Make My Trip As
+    Search Buses    ${from}    ${to}
+    Toggle Fastest Sorting And Validate 
