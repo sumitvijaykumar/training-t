@@ -165,3 +165,10 @@ Initial condition
 
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
     Click Element      //div[text()="${filterType}"]/following-sibling::div[text()="CLEAR"]
+
+
+
+Clear Filter    ${filter}
+     
+    Click Element    //p[contains(@class,'deepskyBlueText')]             
+    Wait Until Element Is Visible    //p[contains(@class,'disabledGrey')]    10s
