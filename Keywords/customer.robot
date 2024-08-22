@@ -93,5 +93,30 @@ Get All Bus Price and verify
 Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
+Get all bus
+    [Arguments]   ${filtername} 
+    @{allACBus}  Create List
+    Run Keyword And Ignore Error  Click element  //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberofbusses}  Get Element Count  //div[contains(@class,'busCardContainer')]
+    ${numberofbusses}  Evaluate  $numberofbusses+1
+
+
+    FOR  ${index}  IN RANGE  1  ${numberofbusses}
+    ${ACBus}   Get Text  (//div[contains(@class,'busCardContainer')]//p[contains(@class,'secondaryTxt')])[${index}]
+    Log  ${ACBus}
+    Append To List  ${allACBus}   ${ACBus}
+    END
+    Log   ${allACBus}
+    ${str}  Remove String  ${filtername}  /
+    ${today}    todaydate.today_date
+    Log     ${today}
+    Set Test Variable    ${str}    ${str}
+    Set Test Variable    @{allACBus}   @{allACBus}
+    Set Test Variable    ${filtername}  ${filtername} 
+Verify filter
+    Log  ${allACBus}
+    FOR    ${element}    IN    @{allACBus}
+        Should Contain Any  ${element}    ${str}    ${filtername}
+    END
 
 
