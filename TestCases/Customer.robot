@@ -34,3 +34,31 @@ TC-005 Verify if a user is able to filter bus according to ac and non ac
    Select filter  AC  Non AC
    Get all bus   Non A/C
    Verify filter
+
+TC-006 Verify if a user is able to filter bus according to their seat preference
+    
+    Open Make My Trip As
+    open link for Make My
+    Set Suite Variable    ${today}    ${today}
+    Search Buses    Coimbatore    Trivandrum             
+    Select Filter     Pick up point     Ettimadai
+    pickups and drop    Ettimadai
+
+TC-001 Verify if a user is able to filter bus according to their preference and clear the filter
+    
+    Select Filter    AC    AC
+    Select Filter    Seat type    Sleeper
+    Select Filter    Seater/    Single
+    Select Filter    Pick up point    Ettimadai
+    Select Filter    Pick up time    6 AM to 11 AM
+    Select Filter    Travel Operators    A1 Travels
+    Select Filter    Drop point    Kazhakootam
+    Select Filter    Drop time    6 AM to 11 AM
+    Clear Filter           
+
+TC-007 Verify if a user is able to filter bus according to their ratings
+    Open Make My Trip As
+    Search Buses    ${from}    ${to}    ${date}
+    Get All Bus Rating
+    Get Top Rated Bus
+    Check If Ratings Are Equal    ${last_element}    ${top_rating}

@@ -5,3 +5,6 @@ open make my trip
     Maximize Browser Window
     Wait Until Element Is Visible  //span[@class='commonModal__close']   10s
     Click Element    //span[@class='commonModal__close']
+
+
+
