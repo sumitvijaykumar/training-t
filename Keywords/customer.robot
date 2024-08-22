@@ -180,7 +180,6 @@ Initial condition
 
 
 
-
 Clear Filter    ${filter}
      
     Click Element    //p[contains(@class,'deepskyBlueText')]             
