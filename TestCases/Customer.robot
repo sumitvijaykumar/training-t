@@ -43,3 +43,15 @@ TC-006 Verify if a user is able to filter bus according to their seat preference
     Search Buses    Coimbatore    Trivandrum             
     Select Filter     Pick up point     Ettimadai
     pickups and drop    Ettimadai
+
+TC-001 Verify if a user is able to filter bus according to their preference and clear the filter
+    
+    Select Filter    AC    AC
+    Select Filter    Seat type    Sleeper
+    Select Filter    Seater/    Single
+    Select Filter    Pick up point    Ettimadai
+    Select Filter    Pick up time    6 AM to 11 AM
+    Select Filter    Travel Operators    A1 Travels
+    Select Filter    Drop point    Kazhakootam
+    Select Filter    Drop time    6 AM to 11 AM
+    Clear Filter           
