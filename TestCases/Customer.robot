@@ -79,3 +79,10 @@ TC-010 Verify Initial toggle to shortest duration
     Open Make My Trip As
     Search Buses    ${from}    ${to}
     Toggle Fastest Sorting And Validate 
+
+
+TC-011 Verify if a user is able to filter bus according to their drop time
+    Open Make My Trip As
+    Search Buses    ${from}    ${to}    ${date}
+    Select Filter    Drop time    6 AM to 11 AM
+    Filter time

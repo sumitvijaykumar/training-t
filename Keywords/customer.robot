@@ -385,3 +385,28 @@ Filter time
     END
     Sort List    ${totaltime}
     Log    Sorted List (Ascending): ${totaltime}
+
+
+Select Filter
+
+    [Arguments]     ${filterType}     ${filterExactText}
+    # take the initial count
+    Click Element     toggle_buses
+    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
+    #wait till its not the previous count or wait till elemnt disappears.
+    sleep   10s
+
+Filter time
+    @{totaltime}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
+
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
+    Append To List     ${totaltime}    ${time}
+    END
+    Sort List    ${totaltime}
+    Log    Sorted List (Ascending): ${totaltime}   
