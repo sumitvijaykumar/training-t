@@ -147,3 +147,17 @@ Validating Data
         ${busDate}    Set Variable    ${allBusDate}[${count}]
         Should Be Equal    ${dateMonth}    ${busDate}
     END
+
+
+Filter time
+    ${totaltime}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
+
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${time}     Get Text       (//span[contains(@class,'secondaryTxt')]/preceding-sibling::span[contains(@class,'latoBlack')])[${index}]          # node with id in it, exact 16 matches.
+    Append To List     ${totaltime}    ${time}
+    END
+    Sort List    ${totaltime}
+    Log    Sorted List (Ascending): ${totaltime}
