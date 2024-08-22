@@ -8,7 +8,7 @@ TC-001 Verify if a user is able to filter bus according to their seat preference
     Get All Bus Price and verify
     
 
-TC-001 Verify if a user is able to filter bus according to their seat preference
+TC-002 Verify if a user is able to filter bus according to their seat preference
     
     Open Make My Trip As
     open link for Make My
