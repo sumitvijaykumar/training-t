@@ -119,4 +119,31 @@ Verify filter
         Should Contain Any  ${element}    ${str}    ${filtername}
     END
 
+Get All Bus Date
+    @{allBusDate}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+        ${busDate}     Get Text       (//span[contains(@class,"latoBlack blackText")]/following-sibling::span[contains(@class,"secondaryTxt")])[${index}]          # node with id in it, exact 16 matches.
+        Append To List     ${allBusDate}    ${busDate}
+    END
+    Log    ${allBusDate}
+    RETURN    ${allBusDate}    ${numberOfBuses}
 
+Get Input Date
+    ${busDate}    Get Element Attribute    //input[@data-testid="travelDate"]    value
+    ${busDate}    Split String    ${busDate}    ${SPACE}
+    Set Test Variable    ${day}    ${busDate}[1]
+    Set Test Variable    ${month}    ${busDate}[2]
+    ${dateMonth}    Catenate    ${day}    ${month}
+    ${dateMonth}    Convert To Upper Case    ${dateMonth}
+    RETURN    ${dateMonth}
+
+Validating Data
+    [Arguments]    ${allBusDate}    ${numberOfBuses}    ${dateMonth}
+    ${numberOfBuses}    Evaluate     $numberOfBuses-1
+    FOR    ${count}    IN RANGE    ${numberOfBuses}
+        ${busDate}    Set Variable    ${allBusDate}[${count}]
+        Should Be Equal    ${dateMonth}    ${busDate}
+    END
