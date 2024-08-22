@@ -23,3 +23,10 @@ TC-004 Verify if a user is able to filter bus according to their drop point
     Search Buses    Coimbatore    Thiruvananthapuram
     Select Filter    Drop point     Pattam   
     Verify Filter    Pattam  
+
+TC-006 Verify the departure date of buses should be same as entered
+    Open Make My Trip As
+    Search Buses    ${from}    ${to}    ${date}    ${month}
+    ${allBusDate}    ${numberOfBuses}    Get All Bus Date
+    ${inputDate}    Get Input Date
+    Validating Data    ${allBusDate}    ${numberOfBuses}    ${inputDate}
