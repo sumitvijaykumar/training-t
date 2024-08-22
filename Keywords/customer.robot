@@ -198,3 +198,33 @@ Get Top Rated Bus
 Check If Ratings Are Equal
     [Arguments]    ${last_element}    ${top_rating}
     Should Be Equal    ${last_element}    ${top_rating}    
+
+
+Select drop point
+    [Arguments]     ${filterType}     ${filterExactText}
+    # take the initial count
+    Click Element     toggle_buses
+    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
+    #wait till its not the previous count or wait till elemnt disappears.
+    sleep   3s
+
+
+Verify drop point
+    [Arguments]    ${filtertext}
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    Wait Until Element Is Visible    //div[@class="busCardContainer "]
+    ${numberOfBuscard}     Get Element Count    //div[@class="busCardContainer "]
+    ${numberOfBuses}    Evaluate     $numberOfBuscard+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+        Scroll Element Into View     (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        sleep    3s
+        Element Should Be Visible    //ul[@class="btnSelectBusWithoutRadio"]//span[@title="${filtertext}"]    
+        Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        # ${count}    Evaluate    ${count}+1
+    END
+    # Should Be Equal As Numbers    ${numberOfBuscard}    ${finalcount}
+    # Should Be Equal    ${numberOfBuscard}    ${count}
+    Sleep    3s
