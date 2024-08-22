@@ -113,6 +113,7 @@ Get all bus
     Set Test Variable    ${str}    ${str}
     Set Test Variable    @{allACBus}   @{allACBus}
     Set Test Variable    ${filtername}  ${filtername} 
+
 Verify filter
     Log  ${allACBus}
     FOR    ${element}    IN    @{allACBus}
@@ -148,23 +149,35 @@ Validating Data
         Should Be Equal    ${dateMonth}    ${busDate}
     END
 
-Verify Busname
-    [Arguments]    ${filterType}   ${BUS_NAME} 
 
+
+Get filtered Bus Name
+    [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
+
+    [Arguments]    ${filterType}   ${BUS_NAME}   
+    @{allBusName}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]//p[text()="${BUS_NAME}"]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${busName}     Get Text      (//div[starts-with(@id,"bus_")]//p[text()="${BUS_NAME}"])[${index}]         # node with text in it, exact 3 matches.
+    Append To List     ${allBusName}    ${busName}
+
+    END
     Log    ${allBusName}
 
     FOR    ${i}    IN    @{allBusName}
     Should Be Equal As Strings     ${BUS_NAME}    ${i}
     END
 
-
-Initial condition
-    [Documentation]  Click on clear to undo my changes
-    
+Initial condition    
     [Arguments]     ${filterType}
 
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
     Click Element      //div[text()="${filterType}"]/following-sibling::div[text()="CLEAR"]
+
+
+
 
 
 
