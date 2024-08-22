@@ -147,3 +147,21 @@ Validating Data
         ${busDate}    Set Variable    ${allBusDate}[${count}]
         Should Be Equal    ${dateMonth}    ${busDate}
     END
+
+Verify Busname
+    [Arguments]    ${filterType}   ${BUS_NAME} 
+
+    Log    ${allBusName}
+
+    FOR    ${i}    IN    @{allBusName}
+    Should Be Equal As Strings     ${BUS_NAME}    ${i}
+    END
+
+
+Initial condition
+    [Documentation]  Click on clear to undo my changes
+    
+    [Arguments]     ${filterType}
+
+    #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
+    Click Element      //div[text()="${filterType}"]/following-sibling::div[text()="CLEAR"]
