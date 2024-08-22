@@ -244,3 +244,26 @@ Get All Bus Id
     Click Element     toggle_buses
     [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
     Sleep    5s
+
+Pickups and Drop and verify
+
+    [Arguments]    ${filtertext}
+    @{place}    Create List
+    Run Keyword And Ignore Error    Click Element    //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    Wait Until Element Is Visible    //div[@class="busCardContainer "]
+    ${numberOfBuscard}    Get Element Count    //div[@class="busCardContainer "]
+    ${numberOfBuses}    Evaluate    $numberOfBuscard + 1
+    
+
+    FOR    ${index}    IN RANGE    1    ${numberOfBuses}
+        Scroll Element Into View    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        Sleep    3s
+        Element Should Be Visible    //ul[@class="btnSelectBusWithoutRadio"]//span[@title="${filtertext}"]
+        Run Keyword And Ignore Error    Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
+        
+    END
+
+undo filter
+    Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
+    Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
