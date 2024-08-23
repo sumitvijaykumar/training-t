@@ -35,7 +35,7 @@ TC-004 Verify if a user is able to filter bus according to their drop point
 
 
 TC-005 Verify if a user is able to filter bus according to ac and non ac
-   Search bus    ${from}    ${to}    
+   Search Buses    Coimbatore    Trivandrum    
    Select filter  AC  Non AC
    Get all bus   Non A/C
    Verify filter
