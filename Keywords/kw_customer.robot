@@ -255,7 +255,13 @@ Get All Bus Id
         Append To List     ${allBusId}    ${busId}
     END
     Log    ${allBusId}
+
+    Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
+    ${numberOfBuses}    Evaluate     $numberOfBuses-1
+    Should Be Equal    ${numberOfBuses}    ${busesnumber}
     Click Element     toggle_buses
+
     [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
     Sleep    5s
 
