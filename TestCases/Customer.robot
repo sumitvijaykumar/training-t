@@ -1,4 +1,5 @@
 *** Settings ***
+Resource    ${EXECDIR}/Keywords/common.robot
 
 *** Test Cases ***
 TC-001 Verify if a user is able to filter bus according to price
@@ -85,4 +86,4 @@ TC-011 Verify if a user is able to filter bus according to their drop time
     Open Make My Trip As
     Search Buses    ${from}    ${to}    ${date}
     Select Filter    Drop time    6 AM to 11 AM
-    Filter time
+    Filter time-00
