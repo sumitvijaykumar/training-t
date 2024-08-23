@@ -45,11 +45,9 @@ TC-005 Verify if a user is able to filter bus according to ac and non ac
 TC-006 Verify if a user is able to filter bus according to their pick-up point
     
     Open Make My Trip As
-    open link for Make My
-    Set Suite Variable    ${today}    ${today}
     Search Buses    Coimbatore    Trivandrum             
     Select Filter     Pick up point     Ettimadai
-    pickups and drop    Ettimadai
+    Pickups point    Ettimadai
 
 TC-007 Verify if a user is able to filter bus according to their preference and clear the filter
     
