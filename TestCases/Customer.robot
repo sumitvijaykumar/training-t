@@ -20,7 +20,7 @@ TC-002 Verify if a user is able to filter bus according to Travel Operator
 TC-003 Verify if a user is able to filter bus according to their seat preference
     
     Open Make My Trip As
-    Search Buses    ${from}    ${to}    #${date}
+    Search Buses    ${from}    ${to}    
     Select Filter     Seat type     Sleeper
     Get All Bus Id    Seat type     Sleeper
 

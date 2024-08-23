@@ -1,3 +1,6 @@
+*** Settings ***
+Library    SeleniumLibrary
+Library    Collections
 *** Keywords ***
 Search bus
     [Arguments]   ${fromcity}   ${tocity}     ${date}=today's date
@@ -249,8 +252,8 @@ Get All Bus Id
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-    ${busId}     Get Element Attribute       (//div[starts-with(@id,"bus_")])[${index}]        id  # node with id in it, exact 16 matches.
-    Append To List     ${allBusId}    ${busId}
+        ${busId}     Get Element Attribute       (//div[starts-with(@id,"bus_")])[${index}]        id  
+        Append To List     ${allBusId}    ${busId}
     END
     Log    ${allBusId}
     Click Element     toggle_buses
