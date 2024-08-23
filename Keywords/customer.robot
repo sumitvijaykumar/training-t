@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Library    Collections
 *** Keywords ***
-Search bus
+Search Buses
     [Arguments]   ${fromcity}   ${tocity}     ${date}=today's date
     ${day}    ${month}    Split String    ${date}    ${SPACE}
  
