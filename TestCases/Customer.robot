@@ -13,7 +13,7 @@ TC-001 Verify if a user is able to filter bus according to price
 TC-002 Verify if a user is able to filter bus according to Travel Operator
 
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
+    Search Buses    Coimbatore    Trivandrum
     Select Filter    Travel Operators     A1 Travels
     Get filtered Bus Name    Travel Operators     A1 Travels
     Initial condition   Travel Operators
