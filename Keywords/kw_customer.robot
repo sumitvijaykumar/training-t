@@ -232,7 +232,7 @@ Verify drop point
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
         Scroll Element Into View     (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
         Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
-        sleep    3s
+        sleep    5s
         Element Should Be Visible    //ul[@class="btnSelectBusWithoutRadio"]//span[@title="${filtertext}"]    
         Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
         # ${count}    Evaluate    ${count}+1
