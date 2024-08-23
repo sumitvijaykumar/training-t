@@ -79,9 +79,8 @@ TC-009 Verify the departure date of buses should be same as entered
 
 TC-010 Verify Initial toggle to shortest duration
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Toggle Fastest Sorting And Validate 
-
+    Search Buses    Coimbatore    Trivandrum
+    Toggle Fastest Sorting And Validate    ascending    descending            
 
 TC-011 Verify if a user is able to filter bus according to their drop time
     Open Make My Trip As

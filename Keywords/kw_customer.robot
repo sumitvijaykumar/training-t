@@ -281,7 +281,8 @@ Pickups and Drop and verify
 undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
-Toggle Fastest Sorting And Validate
+Toggle Fastest Sorting And Validate  
+    [Arguments]   ${ascOrder}    ${dscOrder}                 
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
@@ -290,7 +291,7 @@ Toggle Fastest Sorting And Validate
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
     @{firstDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
-    Log   Current list: ${firstDurations}
+    Log   Current list: ${firstDurations}    
     Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
 
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
