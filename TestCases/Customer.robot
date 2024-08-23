@@ -63,9 +63,9 @@ TC-007 Verify if a user is able to filter bus according to their preference and 
 
 TC-008 Verify if a user is able to filter bus according to their ratings
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Get All Bus Rating
-    Get Top Rated Bus
+    Search Buses    Coimbatore    Trivandrum
+    ${last_element}    Get All Bus Rating
+    ${top_rating}    Get Top Rated Bus
     Check If Ratings Are Equal    ${last_element}    ${top_rating}
 
 TC-009 Verify the departure date of buses should be same as entered
