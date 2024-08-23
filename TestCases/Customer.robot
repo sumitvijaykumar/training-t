@@ -69,7 +69,7 @@ TC-008 Verify if a user is able to filter bus according to their ratings
 
 TC-009 Verify the departure date of buses should be same as entered
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
+    Search Buses    Coimbatore    Trivandrum
     ${allBusDate}    ${numberOfBuses}    Get All Bus Date
     ${inputDate}    Get Input Date
     Validating Data    ${allBusDate}    ${numberOfBuses}    ${inputDate}
