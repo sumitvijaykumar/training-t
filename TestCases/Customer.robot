@@ -29,9 +29,9 @@ TC-003 Verify if a user is able to filter bus according to their seat preference
 
 TC-004 Verify if a user is able to filter bus according to their drop point
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Select Filter    Drop point     Pattam   
-    Verify Filter    Pattam  
+    Search Buses    Coimbatore    Trivandrum     
+    Select drop point    Drop point     Pattam   
+    Verify drop point    Pattam  
 
 
 TC-005 Verify if a user is able to filter bus according to ac and non ac
