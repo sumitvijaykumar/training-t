@@ -1,7 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    Collections
-   
 *** Keywords ***
 Search Buses
     [Arguments]   ${fromcity}   ${tocity}     ${date}=today's date
@@ -94,7 +93,9 @@ Get All Bus Price and verify
     Log    Private Bus Prices: ${sorted_private_prices}
     Log    Original Combined Prices: ${allBusPrice}
     Log    Combined Sorted Prices: ${combined_sorted_prices}
-
+Undo
+    Click Element     toggle_buses
+    Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
 Get all bus
     [Arguments]   ${filtername} 
     @{allACBus}  Create List
@@ -110,6 +111,7 @@ Get all bus
     END
     Log   ${allACBus}
     ${str}  Remove String  ${filtername}  /
+    Log ${str}
     Set Test Variable    ${str}    ${str}
     Set Test Variable    @{allACBus}   @{allACBus}
     Set Test Variable    ${filtername}  ${filtername} 
@@ -232,7 +234,7 @@ Verify drop point
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
         Scroll Element Into View     (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
         Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
-        sleep    5s
+        sleep    3s
         Element Should Be Visible    //ul[@class="btnSelectBusWithoutRadio"]//span[@title="${filtertext}"]    
         Click Element    (//div[contains(@class,"busCardFooter")]//span[text()="Pickups & Drops"])[${index}]
         # ${count}    Evaluate    ${count}+1
@@ -257,7 +259,7 @@ Get All Bus Id
     [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
     Sleep    5s
 
-Pickups point
+Pickups and Drop and verify
 
     [Arguments]    ${filtertext}
     @{place}    Create List
@@ -279,8 +281,7 @@ Pickups point
 undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
-Toggle Fastest Sorting And Validate  
-    [Arguments]   ${ascOrder}    ${dscOrder}                 
+Toggle Fastest Sorting And Validate
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
@@ -289,7 +290,7 @@ Toggle Fastest Sorting And Validate
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
     @{firstDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
-    Log   Current list: ${firstDurations}    
+    Log   Current list: ${firstDurations}
     Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
 
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
@@ -399,15 +400,15 @@ Select Filter
     #wait till its not the previous count or wait till elemnt disappears.
     sleep   10s
 
-# Filter time
-#     @{totaltime}    Create List
-#     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-#     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
-#     ${numberOfBuses}    Evaluate     $numberOfBuses+1
+Filter time
+    @{totaltime}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
 
-#     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-#     ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
-#     Append To List     ${totaltime}    ${time}
-#     END
-#     Sort List    ${totaltime}
-#     Log    Sorted List (Ascending): ${totaltime}   
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
+    Append To List     ${totaltime}    ${time}
+    END
+    Sort List    ${totaltime}
+    Log    Sorted List (Ascending): ${totaltime}   

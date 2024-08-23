@@ -29,13 +29,14 @@ TC-003 Verify if a user is able to filter bus according to their seat preference
 
 TC-004 Verify if a user is able to filter bus according to their drop point
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Select Filter    Drop point     Pattam   
-    Verify Filter    Pattam  
+    Search Buses    Coimbatore    Trivandrum     
+    Select drop point    Drop point     Pattam   
+    Verify drop point    Pattam  
 
 
 TC-005 Verify if a user is able to filter bus according to ac and non ac
-   Search bus    ${from}    ${to}    
+   Open Make My Trip As
+   Search Buses    Coimbatore    Trivandrum     
    Select filter  AC  Non AC
    Get all bus   Non A/C
    Verify filter
@@ -63,9 +64,9 @@ TC-007 Verify if a user is able to filter bus according to their preference and 
 
 TC-008 Verify if a user is able to filter bus according to their ratings
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Get All Bus Rating
-    Get Top Rated Bus
+    Search Buses    Coimbatore    Trivandrum
+    ${last_element}    Get All Bus Rating
+    ${top_rating}    Get Top Rated Bus
     Check If Ratings Are Equal    ${last_element}    ${top_rating}
 
 TC-009 Verify the departure date of buses should be same as entered
@@ -78,9 +79,8 @@ TC-009 Verify the departure date of buses should be same as entered
 
 TC-010 Verify Initial toggle to shortest duration
     Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Toggle Fastest Sorting And Validate 
-
+    Search Buses    Coimbatore    Trivandrum
+    Toggle Fastest Sorting And Validate    ascending    descending            
 
 TC-011 Verify if a user is able to filter bus according to their drop time
     Open Make My Trip As
