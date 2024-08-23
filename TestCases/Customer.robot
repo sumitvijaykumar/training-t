@@ -47,6 +47,7 @@ TC-006 Verify if a user is able to filter bus according to their pick-up point
     Search Buses    Coimbatore    Trivandrum             
     Select Filter     Pick up point     Ettimadai
     Pickups point    Ettimadai
+    undo filter
 
 TC-007 Verify if a user is able to filter bus according to their preference and clear the filter
     
