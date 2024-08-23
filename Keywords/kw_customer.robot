@@ -259,7 +259,7 @@ Get All Bus Id
     [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
     Sleep    5s
 
-Pickups and Drop and verify
+Pickups point
 
     [Arguments]    ${filtertext}
     @{place}    Create List
