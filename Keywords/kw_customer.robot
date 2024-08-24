@@ -256,6 +256,10 @@ Get All Bus Id
         Append To List     ${allBusId}    ${busId}
     END
     Log    ${allBusId}
+    Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
+    ${numberOfBuses}    Evaluate     $numberOfBuses-1
+    Should Be Equal    ${numberOfBuses}    ${busesnumber}
     Click Element     toggle_buses
     [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
     Sleep    5s
@@ -377,17 +381,17 @@ Undo
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
 
 Filter time
-    ${totaltime}    Create List
+    @{totaltime}    Create List
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
 
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-    ${time}     Get Text       (//span[contains(@class,'secondaryTxt')]/preceding-sibling::span[contains(@class,'latoBlack')])[${index}]          # node with id in it, exact 16 matches.
+    ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
     Append To List     ${totaltime}    ${time}
     END
     Sort List    ${totaltime}
-    Log    Sorted List (Ascending): ${totaltime}
+    Log    Sorted List (Ascending): ${totaltime}   
 
 
 Select Filter
