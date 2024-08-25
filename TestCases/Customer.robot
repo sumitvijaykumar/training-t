@@ -2,6 +2,7 @@
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
 Resource    ../Keywords/common.robot
+Variables    ../Variables/data.yaml
 # Suite Setup    Open Make My Trip As
 # Suite Teardown    Close Browser
 
@@ -22,13 +23,13 @@ TC-002 Verify if a user is able to filter bus according to Travel Operator
     Initial condition   Travel Operators
 
 
-TC-003 Verify if a user is able to filter bus according to their seat preference
-    
+TC_003 
+    [Documentation]    Verify if a user is able to filter bus according to their seat preference
     Open Make My Trip As
-    Search Buses     Coimbatore    Trivandrum  
-    Select Filter     Seat type     Sleeper
-    Get All Bus Id    Seat type     Sleeper
-
+    Search Buses    ${${TEST_NAME}.FROM}    ${${TEST_NAME}.TO} 
+    Select Filter     Seat type    ${${TEST_NAME}.SEAT_TYPE}
+    ${numberOfBuses}    Get All Bus Id    
+    Verify Seat Type    ${numberOfBuses}    Seat type
 
 TC-004 Verify if a user is able to filter bus according to their drop point
     Open Make My Trip As

@@ -1,7 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    Collections
-
+Variables    ../Variables/data.yaml
    
 *** Keywords ***
 Search Buses
@@ -245,8 +245,8 @@ Verify drop point
     Sleep    3s
 
 
-Get All Bus Id
-    [Arguments]     ${filterType}     ${filterExactText}
+Get All Bus Id 
+
     @{allBusId}    Create List
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
@@ -256,13 +256,20 @@ Get All Bus Id
         Append To List     ${allBusId}    ${busId}
     END
     Log    ${allBusId}
+    RETURN    ${numberOfBuses} 
+
+Verify Seat Type
+
+    [Arguments]    ${numberOfBuses}    ${filterType}     
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
+    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'${${TEST_NAME}.SEAT_TYPE}')])
     ${numberOfBuses}    Evaluate     $numberOfBuses-1
     Should Be Equal    ${numberOfBuses}    ${busesnumber}
-    Click Element     toggle_buses
-    [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+    Run Keyword And Ignore Error    Click Element     toggle_buses
+    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='${${TEST_NAME}.SEAT_TYPE}']
+    # Wait Until Element Is Visible    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIcon")]/following-sibling::span[text()='${${TEST_NAME}.SEAT_TYPE}']    5s
     Sleep    5s
+
 
 Pickups point
 
