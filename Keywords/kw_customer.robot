@@ -394,16 +394,6 @@ Filter time
     Log    Sorted List (Ascending): ${totaltime}   
 
 
-Select Filter
-
-    [Arguments]     ${filterType}     ${filterExactText}
-    # take the initial count
-    Click Element     toggle_buses
-    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
-    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
-    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
-    #wait till its not the previous count or wait till elemnt disappears.
-    sleep   10s
 
 # Filter time
 #     @{totaltime}    Create List
