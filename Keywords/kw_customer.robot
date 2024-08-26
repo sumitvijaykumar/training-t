@@ -180,7 +180,9 @@ Validating Data
 et filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
-    [Arguments]    ${filterType}   ${BUS_NAME}   
+    [Arguments]     ${filterType}
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+
     @{allBusName}    Create List
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]//p[text()="${BUS_NAME}"]
@@ -202,7 +204,20 @@ Clear Travel Operator Filter
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
     Click Element      //div[text()="${filterType}"]/following-sibling::div[text()="CLEAR"]
 
+Select Multiple Options In Filter
 
+    [Arguments]     ${filterType}
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE_2}
+
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+    
+Check Previous Filter Present Or Not
+
+    [Arguments]    
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+     
+    ${class_attr}=    Get Element Attribute      //span[text()='A1 Travels']/parent::div[contains(@class,'pushLeft')]     class
+    Should Contain       ${class_attr}      selected
 
 
 

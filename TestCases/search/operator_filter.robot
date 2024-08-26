@@ -39,9 +39,9 @@ TC_001
 
 
     Open Make My Trip As
-    Search Buses    Coimbatore    Trivandrum
-    Select Filter    Travel Operators     A1 Travels
-    Get filtered Bus Names    Travel Operators     A1 Travels
+    Search Buses
+    Select Filter    Travel Operators
+    Get filtered Bus Names    Travel Operators
     Clear Travel operator Filter     Travel Operators
 
 
@@ -77,7 +77,8 @@ TC_002
 
 
     Open Make My Trip As
-    Search Buses    Coimbatore    Trivandrum
-    Select Filter    Travel Operators     A1 Travels
-    Select Multiple Options In Filter   Travel Operators   KSRTC (Kerala)
-    Check Previous Filter Present Or Not      A1 Travels     
+    Search Buses
+    Select Filter    Travel Operators
+    Select Multiple Options In Filter   Travel Operators
+    Check Previous Filter Present Or Not
+    Clear Travel operator Filter     Travel Operators     
