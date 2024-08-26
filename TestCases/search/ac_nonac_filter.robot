@@ -24,7 +24,7 @@ TC_001
    ...  14.click on AC button 
    ...  14.Verify user is not able to select both  AC and Non AC filter
    ...  15.Verify user is able to see only ac bus   
-   ...  Expected Result: 
+   ...  Expected Result: User is able to select only ac filter and user is able to see only ac bus card 
    ...
 
    [Tags]      selectOne
@@ -54,7 +54,7 @@ TC_002
    ...  14.click on Non AC button 
    ...  14.Verify user is not able to select both  AC and Non AC filter
    ...  15.Verify user is able to see only ac bus   
-   ...  Expected Result: 
+   ...  Expected Result: User is able to select only Non ac filter and user is able to see only non ac bus card 
    ...
 
    [Tags]      selectOne
