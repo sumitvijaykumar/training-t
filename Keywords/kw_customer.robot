@@ -154,7 +154,7 @@ Validating Data
 
 
 
-Get filtered Bus Name
+et filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
     [Arguments]    ${filterType}   ${BUS_NAME}   
@@ -173,7 +173,7 @@ Get filtered Bus Name
     Should Be Equal As Strings     ${BUS_NAME}    ${i}
     END
 
-Initial condition    
+Clear Travel Operator Filter    
     [Arguments]     ${filterType}
 
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
