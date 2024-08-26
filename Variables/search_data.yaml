@@ -12,3 +12,12 @@ suiteName:
   testName:
     value:
 
+Ac_nonac_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
