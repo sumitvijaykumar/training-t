@@ -33,7 +33,8 @@ operator_filter:
     FROM : Coimbatore
     TO : Trivandrum
     VALUE: A1 Travels
-    VALUE_2 : KSRTC (Kerala)Drop_point_filter:
+    VALUE_2 : KSRTC (Kerala)
+Drop_point_filter:
   TC_001:
     FROM: Coimbatore
     TO: Trivandrum
