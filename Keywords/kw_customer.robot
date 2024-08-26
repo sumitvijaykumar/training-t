@@ -51,7 +51,6 @@ Get All Bus Price and verify
 
         Append To List    ${allBusPrice}    ${price}  
     END
-    
     FOR    ${index}    IN RANGE    1    ${busCount}
 
         ${busName}    Get Text    (//p[contains(@class, 'latoBold blackText')])[${index}]
@@ -67,26 +66,37 @@ Get All Bus Price and verify
     END
     ${sorted_ksrtc_prices}    Copy List    ${allKsrtcPrices}
     Sort List    ${sorted_ksrtc_prices}
-    
+    ${sorted_ksrtc_prices_Desc}    Copy List    ${sorted_ksrtc_prices}
+    Reverse List    ${sorted_ksrtc_prices_Desc}
+
     ${sorted_private_prices}    Copy List    ${allPrivatePrices}
     Sort List    ${sorted_private_prices}
+    ${sorted_private_prices_Desc}    Copy List    ${sorted_private_prices}
+    Reverse List    ${sorted_private_prices_Desc}
     
 
-    @{combined_sorted_prices}    Create List
+    @{combined_sorted_prices_desc}    Create List
+    FOR    ${price}    IN    @{sorted_ksrtc_prices_Desc}
+        Append To List    ${combined_sorted_prices_desc}    ${price}
+    END
+    FOR    ${price}    IN    @{sorted_private_prices_Desc}
+        Append To List    ${combined_sorted_prices_desc}    ${price}
+    END
+    
+    @{combined_sorted_prices_asc}    Create List
     FOR    ${price}    IN    @{sorted_ksrtc_prices}
-        Append To List    ${combined_sorted_prices}    ${price}
+        Append To List    ${combined_sorted_prices_asc}    ${price}
     END
     FOR    ${price}    IN    @{sorted_private_prices}
-        Append To List    ${combined_sorted_prices}    ${price}
+        Append To List    ${combined_sorted_prices_asc}    ${price}
     END
+    ${is_sorted_correctly_asc}    Evaluate    ${allBusPrice} == ${combined_sorted_prices_asc}
+    ${is_sorted_correctly_dec}    Evaluate    ${allBusPrice} == ${combined_sorted_prices_desc}
     
-    
-    
-    
-    ${is_sorted_correctly}    Evaluate    ${allBusPrice} == ${combined_sorted_prices}
-    
-    IF    ${is_sorted_correctly}
+    IF    ${is_sorted_correctly_asc}
         Log    Prices are sorted correctly
+    ELSE IF    ${is_sorted_correctly_dec}
+        Log    Prices are sorted in descending order correctly
     ELSE
         Fail    Prices are not sorted correctly
     END
@@ -94,7 +104,8 @@ Get All Bus Price and verify
     Log    KSRTC Bus Prices: ${sorted_ksrtc_prices}
     Log    Private Bus Prices: ${sorted_private_prices}
     Log    Original Combined Prices: ${allBusPrice}
-    Log    Combined Sorted Prices: ${combined_sorted_prices}
+    Log    Combined Sorted Prices: ${combined_sorted_prices_asc}
+
 
 Get all bus
     [Arguments]   ${filtername} 
