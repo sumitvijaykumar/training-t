@@ -270,7 +270,7 @@ Verify Seat Type
     Sleep    5s
 
 
-Pickups point
+Verify Pickups point
 
     [Arguments]    ${filtertext}
     @{place}    Create List

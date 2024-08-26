@@ -49,7 +49,7 @@ TC-006 Verify if a user is able to filter bus according to their pick-up point
     # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum             
     Select Filter     Pick up point     Ettimadai
-    Pickups point    Ettimadai
+    Verify Pickups point    Ettimadai
 
 TC-007 Verify if a user is able to filter bus according to their preference and clear the filter
     
