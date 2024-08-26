@@ -12,10 +12,3 @@ suiteName:
   testName:
     value:
 
-operator_filter:
-  TC_001:
-    FROM : Coimbatore
-    TO : Trivandrum
-    BUS_NAME_1 : A1 Travels
-    BUS_NAME_1 : KSRTC (Kerala)
-

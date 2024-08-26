@@ -124,14 +124,26 @@ Get all bus
     END
     Log   ${allACBus}
     ${str}  Remove String  ${filtername}  /
+    ${strUpper}   Convert To Upper Case     ${str}
+    ${filternameUpper}   Convert To Upper Case     ${filtername}
     Set Test Variable    ${str}    ${str}
     Set Test Variable    @{allACBus}   @{allACBus}
-    Set Test Variable    ${filtername}  ${filtername} 
+    Set Test Variable    ${filtername}  ${filtername}
+    Set Test Variable    ${strUpper}  ${strUpper} 
+    Set Test Variable    ${filternameUpper}  ${filternameUpper}  
 
 Verify filter
+    IF  $str== 'Non AC'
+      ${text}   Get Element Attribute    //div[text()='AC']/../..//span[text()='AC']/parent::div  class
+      Log    ${text}
+      Should Not Contain     ${text}    activeSlot
+    ELSE IF  $str== 'AC'
+        ${text}   Get Element Attribute    //div[text()='AC']/../..//span[text()='Non AC']/parent::div  class
+        Should Not Contain    ${text}    activeSlot 
+    END
     Log  ${allACBus}
     FOR    ${element}    IN    @{allACBus}
-        Should Contain Any  ${element}    ${str}    ${filtername}
+        Should Contain Any  ${element}    ${str}    ${filtername}   ${strUpper}   ${filternameUpper}
     END
 
 Get All Bus Date
