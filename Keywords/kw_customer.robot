@@ -1,7 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    Collections
-
    
 *** Keywords ***
 Search Buses
@@ -129,7 +128,7 @@ Get All Bus Date
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-        ${busDate}     Get Text       (//span[contains(@class,"latoBlack blackText")]/following-sibling::span[contains(@class,"secondaryTxt")])[${index}]          # node with id in it, exact 16 matches.
+        ${busDate}     Get Text       (//span[contains(@class,"latoBlack blackText")]/following-sibling::span[contains(@class,"secondaryTxt")])[${index}]          
         Append To List     ${allBusDate}    ${busDate}
     END
     Log    ${allBusDate}
@@ -154,7 +153,7 @@ Validating Data
 
 
 
-Get filtered Bus Name
+et filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
     [Arguments]    ${filterType}   ${BUS_NAME}   
@@ -173,7 +172,7 @@ Get filtered Bus Name
     Should Be Equal As Strings     ${BUS_NAME}    ${i}
     END
 
-Initial condition    
+Clear Travel Operator Filter    
     [Arguments]     ${filterType}
 
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
@@ -241,8 +240,8 @@ Verify drop point
     Sleep    3s
 
 
-Get All Bus Id
-    [Arguments]     ${filterType}     ${filterExactText}
+Get All Bus Id 
+
     @{allBusId}    Create List
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
@@ -252,15 +251,22 @@ Get All Bus Id
         Append To List     ${allBusId}    ${busId}
     END
     Log    ${allBusId}
+    RETURN    ${numberOfBuses} 
+
+Verify Seat Type
+
+    [Arguments]    ${numberOfBuses}    ${filterType}     
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
     ${numberOfBuses}    Evaluate     $numberOfBuses-1
     Should Be Equal    ${numberOfBuses}    ${busesnumber}
-    Click Element     toggle_buses
-    [Teardown]    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'Seat type')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+    Run Keyword And Ignore Error    Click Element     toggle_buses
+    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+
     Sleep    5s
 
-Pickups point
+
+Verify Pickups point
 
     [Arguments]    ${filtertext}
     @{place}    Create List
@@ -282,7 +288,9 @@ Pickups point
 undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
-Toggle Fastest Sorting And Validate
+
+Toggle Fastest up Sorting and validate
+    [Arguments]    ${ascOrder}
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
@@ -290,18 +298,22 @@ Toggle Fastest Sorting And Validate
     Log    :${durationsofKsrtc} 
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
-    @{firstDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
+    @{firstDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
     Log   Current list: ${firstDurations}
     Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
 
+Toggle Fastest down Sorting and Validate
+
+    [Arguments]    ${dscOrder}
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
     @{durationsofKsrtc}       Get Bus Durations of KSRTC       
     Log    :${durationsofKsrtc} 
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
-    @{secondDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
-    Validate Durations Sorted    ${secondDurations}  order=${dscOrder}
+    @{secondDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
+    Validate Durations Sorted   ${secondDurations}  order=${dscOrder}
 
 Wait Until Buses Are Loaded
     Wait Until Element Is Not Visible    //div[@class="loader"]    timeout=20s
@@ -325,7 +337,7 @@ Get Bus Durations of KSRTC
         Append To List    ${durationsofKsrtc}    ${totalDuration}
     END
     Log    KSRTC Durations: ${durationsofKsrtc}
-    [Return]    ${durationsofKsrtc}
+    [RETURN]     ${durationsofKsrtc}
 
 Get Bus Durations of Private
     ${durationsofPrivate}    Create List
@@ -344,10 +356,9 @@ Get Bus Durations of Private
         Append To List    ${durationsofPrivate}    ${totalDuration}
     END
     Log    Private Durations: ${durationsofPrivate}
-    [Return]    ${durationsofPrivate}
+    [RETURN]    ${durationsofPrivate}
 
-Join Lists Using Combine Lists
-
+Join Lists Using Create Lists
     [Arguments]    ${durationsofKsrtc}    ${durationsofPrivate}
     Log    ${durationsofKsrtc}  
     Log    ${durationsofPrivate}
@@ -355,9 +366,9 @@ Join Lists Using Combine Lists
     Log     ${AllBusDuration}   
     Log     ${AllBusDuration[0]}
     Log   ${AllBusDuration[1]}
-    [Return]    ${AllBusDuration}
+    [RETURN]     ${AllBusDuration}
 
-Validate Durations Sorted
+Validate Durations Sorted 
     [Arguments]    ${AllBusDuration}     ${order}=${None}
     Log  Durations: ${AllBusDuration}
     ${sortedDurationsFinal}     Copy List     ${AllBusDuration}
@@ -365,7 +376,7 @@ Validate Durations Sorted
     Log      ${sortedDurationsFinal[0]} 
     Sort List       ${sortedDurationsFinal[1]}   
     Log      ${sortedDurationsFinal[1]} 
-    Log  ${sortedDurationsFinal} 
+    Log  ${sortedDurationsFinal}
     Run Keyword If         '${order}' == 'descending'     Reverse List     ${sortedDurationsFinal[0]}
     Run Keyword If        '${order}' == 'descending'     Reverse List    ${sortedDurationsFinal[1]} 
     Should Be Equal    ${sortedDurationsFinal}     ${AllBusDuration}
@@ -390,16 +401,6 @@ Filter time
     Log    Sorted List (Ascending): ${totaltime}   
 
 
-Select Filter
-
-    [Arguments]     ${filterType}     ${filterExactText}
-    # take the initial count
-    Click Element     toggle_buses
-    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
-    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
-    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
-    #wait till its not the previous count or wait till elemnt disappears.
-    sleep   10s
 
 Select Filters
     [Arguments]     ${filterType}     ${filterExactText}
