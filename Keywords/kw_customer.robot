@@ -4,21 +4,24 @@ Library    Collections
    
 *** Keywords ***
 Search Buses
-    [Arguments]   ${fromcity}   ${tocity}     ${date}=today's date
+    [Arguments]     ${date}=today's date
+    ${fromCity}        Set Variable     ${${SUITE_NAME}.${TEST_NAME}.FROM}
+    ${toCity}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.TO}
+
     ${day}    ${month}    Split String    ${date}    ${SPACE}
     Wait Until Element Is Visible   //li[@class='menu_Buses']
     Click Element  //li[@class='menu_Buses']
     Wait Until Element Is Visible   fromCity      10s
     Click Element    fromCity
     Wait Until Element Is Visible  //input[contains(@placeholder,'From')]
-    Input Text   //input[contains(@placeholder,'From')]  ${fromcity}
-    Wait Until Element Is Visible  //div[contains(@class,'autosuggest')]//span[contains(text(),'${fromcity},')]
-    Click Element  //div[contains(@class,'autosuggest')]//span[contains(text(),'${fromcity},')]
+    Input Text   //input[contains(@placeholder,'From')]  ${fromCity}
+    Wait Until Element Is Visible  //div[contains(@class,'autosuggest')]//span[contains(text(),'${fromCity},')]
+    Click Element  //div[contains(@class,'autosuggest')]//span[contains(text(),'${fromCity},')]
  
     Run Keyword And Ignore Error  Click Element    toCity
     Wait Until Element Is Visible  //input[contains(@placeholder,'To')]
-    Input Text   //input[contains(@placeholder,'To')]  ${tocity}
-    Wait Until Element Is Visible  //div[contains(@class,'autosuggest')]//span[contains(text(),'(${tocity})')]
+    Input Text   //input[contains(@placeholder,'To')]  ${toCity}
+    Wait Until Element Is Visible  //div[contains(@class,'autosuggest')]//span[contains(text(),'(${toCity})')]
     Click Element  //div[contains(@class, 'autosuggest')]//span[contains(text(),'${toCity},') or contains(text(),'(${toCity}),')]
  
     Run Keyword And Ignore Error  Click Element    travelDate
