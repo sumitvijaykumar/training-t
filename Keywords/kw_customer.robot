@@ -183,10 +183,6 @@ Initial condition
 
 
 
-Clear Filter    ${filter}
-     
-    Click Element    //p[contains(@class,'deepskyBlueText')]             
-    Wait Until Element Is Visible    //p[contains(@class,'disabledGrey')]    10s
 
 Get All Bus Rating
     @{allBusRating}    Create List
@@ -404,6 +400,21 @@ Select Filter
     Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
     #wait till its not the previous count or wait till elemnt disappears.
     sleep   10s
+
+Select Filters
+    [Arguments]     ${filterType}     ${filterExactText}
+    # take the initial count
+    Run Keyword And Ignore Error    Click Element     toggle_buses
+    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']    
+    Run Keyword And Ignore Error    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
+    #wait till its not the previous count or wait till elemnt disappears.
+
+Clear Filter    
+     
+    Click Element    locator=//p[contains(@class,'deepskyBlueText')]             
+    Wait Until Element Is Visible    //p[contains(@class,'disabledGrey')]    10s
+    
 
 # Filter time
 #     @{totaltime}    Create List
