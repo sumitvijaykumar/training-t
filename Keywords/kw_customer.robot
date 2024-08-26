@@ -225,8 +225,10 @@ Check If Ratings Are Equal
 Select drop point
     [Arguments]     ${filterType}     ${filterExactText}
     # take the initial count
+    Scroll Element Into View    toggle_buses
     Click Element     toggle_buses
     ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+    Scroll Element Into View   //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}'] 
     Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
     Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
     #wait till its not the previous count or wait till elemnt disappears.
@@ -250,6 +252,10 @@ Verify drop point
     # Should Be Equal As Numbers    ${numberOfBuscard}    ${finalcount}
     # Should Be Equal    ${numberOfBuscard}    ${count}
     Sleep    3s
+
+verify multiple drop points selected
+    ${count}=    Get Element Count    //div[contains(text(),"Drop point")]/../..//div[contains(@class,"selected ")]
+    Should Be True    ${count}>1
 
 
 Get All Bus Id 

@@ -12,3 +12,16 @@ suiteName:
   testName:
     value:
 
+Drop_point_filter:
+  TC_001:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT: Pattam
+
+  TC_002:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT1 : Pattam
+    DROP_POINT2: Ulloor
+
+  
