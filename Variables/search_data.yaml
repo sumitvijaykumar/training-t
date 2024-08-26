@@ -8,7 +8,10 @@ Demo:
     TO: Trivandrum
 
 
-suiteName:
-  testName:
-    value:
+pickup_point_filter:
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+    Place: Ettimadai
+
 
