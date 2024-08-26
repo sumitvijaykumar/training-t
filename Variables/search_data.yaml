@@ -1,0 +1,14 @@
+Demo:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+  TC_002:
+    FROM: Cochin 
+    TO: Trivandrum
+
+
+suiteName:
+  testName:
+    value:
+
