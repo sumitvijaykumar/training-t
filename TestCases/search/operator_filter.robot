@@ -2,6 +2,9 @@
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
 Resource    ../Keywords/common.robot
+Variables   ${EXECDIR}/Variables/search_data.yaml
+
+
 *** Test Cases ***
 TC_001
     [Documentation]     Verify the user is able to filter Buses using "Travel Operator" filter type.
