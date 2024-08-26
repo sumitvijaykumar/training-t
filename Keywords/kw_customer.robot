@@ -328,44 +328,33 @@ undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
 
-Toggle Fastest up Sorting and validate
-    [Arguments]    ${ascOrder}
+select fastest and get bus duration 
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
-    @{durationsofKsrtc}       Get Bus Durations of KSRTC       
+    ${busCount_Xpath_ksrtc}    Set Variable        //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']   
+    ${busCount_Xpath_private}    Set Variable    //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
+    @{durationsofKsrtc}       Get Durations of all buses    ${busCount_Xpath_ksrtc}        
     Log    :${durationsofKsrtc} 
-    @{durationsofPrivate}       Get Bus Durations of Private     
+    @{durationsofPrivate}       Get Durations of all buses    ${busCount_Xpath_private}   
     Log    :${durationsofPrivate} 
-    @{firstDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
-    Log   Current list: ${firstDurations}
-    Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
-
-Toggle Fastest down Sorting and Validate
-
-    [Arguments]    ${dscOrder}
-    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
-    Wait Until Buses Are Loaded
-    @{durationsofKsrtc}       Get Bus Durations of KSRTC       
-    Log    :${durationsofKsrtc} 
-    @{durationsofPrivate}       Get Bus Durations of Private     
-    Log    :${durationsofPrivate} 
-    @{secondDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
-    Validate Durations Sorted   ${secondDurations}  order=${dscOrder}
+    @{completeDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
+    Log   Current list: ${completeDurations}
+    [RETURN]    ${completeDurations}
 
 Wait Until Buses Are Loaded
     Wait Until Element Is Not Visible    //div[@class="loader"]    timeout=20s
     Wait Until Element Is Visible        //div[@class="busCardContainer "]//div[contains(@class,"makeFlex false")][1]    timeout=20s
     Wait Until Page Contains Element    //div[contains(@class,'secondaryTxt')]    timeout=20s
 
-Get Bus Durations of KSRTC  
-    ${durationsofKsrtc}    Create List
-    Wait Until Element Is Visible  //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']
-    ${numberOfBuses}     Get Element Count    //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']
+Get Durations of all buses  
+    [Arguments]       ${busCount_Xpath}    
+    ${durationOfAllBuses}    Create List
+    Wait Until Element Is Visible  ${busCount_Xpath}
+    ${numberOfBuses}     Get Element Count    ${busCount_Xpath}
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
     FOR    ${index}    IN RANGE    1    ${numberOfBuses}
-        ${durationText}    Get Text    (//p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt'])[${index}]
+        ${durationText}    Get Text    (${busCount_Xpath})[${index}]
         ${hours}    Set Variable    0
         ${minutes}  Set Variable    0
         ${hoursText}   Evaluate    '''${durationText}'''.split("hrs")[0].strip()
@@ -373,29 +362,10 @@ Get Bus Durations of KSRTC
         ${minutesText}    Evaluate    '''${durationText}'''.split("hrs")[-1].split("mins")[0].strip()
         ${minutes}      Convert To Integer    ${minutesText}
         ${totalDuration}    Evaluate    (${hours}*60) + ${minutes} 
-        Append To List    ${durationsofKsrtc}    ${totalDuration}
+        Append To List    ${durationOfAllBuses}    ${totalDuration}
     END
-    Log    KSRTC Durations: ${durationsofKsrtc}
-    [RETURN]     ${durationsofKsrtc}
-
-Get Bus Durations of Private
-    ${durationsofPrivate}    Create List
-    Wait Until Element Is Visible      //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
-    ${numberOfBuses}     Get Element Count    //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
-    ${numberOfBuses}    Evaluate     $numberOfBuses+1
-    FOR    ${index}    IN RANGE    1    ${numberOfBuses}
-        ${durationText}    Get Text    (//div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"])[${index}]
-        ${hours}    Set Variable    0
-        ${minutes}  Set Variable    0
-        ${hoursText}   Evaluate    '''${durationText}'''.split("hrs")[0].strip()
-        ${hours}   Convert To Integer    ${hoursText}
-        ${minutesText}    Evaluate    '''${durationText}'''.split("hrs")[-1].split("mins")[0].strip()
-        ${minutes}      Convert To Integer    ${minutesText}
-        ${totalDuration}    Evaluate    (${hours}*60) + ${minutes} 
-        Append To List    ${durationsofPrivate}    ${totalDuration}
-    END
-    Log    Private Durations: ${durationsofPrivate}
-    [RETURN]    ${durationsofPrivate}
+    Log     Durations: ${durationOfAllBuses}
+    [RETURN]     ${durationOfAllBuses}
 
 Join Lists Using Create Lists
     [Arguments]    ${durationsofKsrtc}    ${durationsofPrivate}
@@ -422,6 +392,7 @@ Validate Durations Sorted
     Log      ${sortedDurationsFinal[0]} 
     Log  ${sortedDurationsFinal[1]} 
     Log   Sorted Durations: ${sortedDurationsFinal}
+
 Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
