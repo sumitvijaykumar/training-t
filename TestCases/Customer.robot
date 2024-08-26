@@ -1,6 +1,9 @@
 *** Settings ***
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
+Resource    ../Keywords/common.robot
+# Suite Setup    Open Make My Trip As
+# Suite Teardown    Close Browser
 
 *** Test Cases ***
 TC-001 Verify if a user is able to filter bus according to price
@@ -22,7 +25,7 @@ TC-002 Verify if a user is able to filter bus according to Travel Operator
 TC-003 Verify if a user is able to filter bus according to their seat preference
     
     Open Make My Trip As
-    Search Buses    ${from}    ${to}    
+    Search Buses     Coimbatore    Trivandrum  
     Select Filter     Seat type     Sleeper
     Get All Bus Id    Seat type     Sleeper
 
