@@ -27,6 +27,7 @@ Search Buses
     ${datelocator}  Set Variable If   "${date}"=="today's date"
     ...    //div[@class='DayPicker-Month']//div[@aria-selected='true']
     ...    //div[contains(text(),${month})]/ancestor::div[@class='DayPicker-Month']//div[contains(text(),${day})]
+    Scroll Element Into View  ${datelocator}
     Wait Until Element Is Visible  ${datelocator}  10s
     Click Element   ${datelocator}
     Click Element   search_button
@@ -111,8 +112,6 @@ Get all bus
     END
     Log   ${allACBus}
     ${str}  Remove String  ${filtername}  /
-    ${today}    todaydate.today_date
-    Log     ${today}
     Set Test Variable    ${str}    ${str}
     Set Test Variable    @{allACBus}   @{allACBus}
     Set Test Variable    ${filtername}  ${filtername} 
