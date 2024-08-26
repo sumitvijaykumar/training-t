@@ -1,10 +1,13 @@
 *** Settings ***
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
+Resource    ../Keywords/common.robot
+Suite Setup    Open Make My Trip As
+Suite Teardown    Close Browser
 
 *** Test Cases ***
 TC-001 Verify if a user is able to filter bus according to price
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum     
     Select Cheapest
     Get All Bus Price and verify
@@ -12,26 +15,26 @@ TC-001 Verify if a user is able to filter bus according to price
 
 TC-002 Verify if a user is able to filter bus according to Travel Operator
 
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum
     Select Filter    Travel Operators     A1 Travels
-    Get filtered Bus Name    Travel Operators     A1 Travels
-    Initial condition   Travel Operators
+    Get filtered Bus Names And Verify    Travel Operators     A1 Travels
+    Clear Travel Operator Filter     Travel Operators
 
 
-TC-003 Verify if a user is able to filter bus according to their seat preference
-    
+TC_003 
+    [Documentation]    Verify if a user is able to filter bus according to their seat preference
     Open Make My Trip As
-    Search Buses    ${from}    ${to}    
-    Select Filter     Seat type     Sleeper
-    Get All Bus Id    Seat type     Sleeper
-
+    Search Buses    ${${TEST_NAME}.FROM}    ${${TEST_NAME}.TO} 
+    Select Filter     Seat type    ${${TEST_NAME}.SEAT_TYPE}
+    ${numberOfBuses}    Get All Bus Id    
+    Verify Seat Type    ${numberOfBuses}    Seat type
 
 TC-004 Verify if a user is able to filter bus according to their drop point
-    Open Make My Trip As
-    Search Buses    ${from}    ${to}
-    Select Filter    Drop point     Pattam   
-    Verify Filter    Pattam  
+    # Open Make My Trip As
+    Search Buses    Coimbatore    Trivandrum 
+    Select drop point    Drop point     Pattam   
+    Verify drop point    Pattam  
 
 
 TC-005 Verify if a user is able to filter bus according to ac and non ac
@@ -43,10 +46,10 @@ TC-005 Verify if a user is able to filter bus according to ac and non ac
 
 TC-006 Verify if a user is able to filter bus according to their pick-up point
     
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum             
     Select Filter     Pick up point     Ettimadai
-    Pickups point    Ettimadai
+    Verify Pickups point    Ettimadai
 
 TC-007 Verify if a user is able to filter bus according to their preference and clear the filter
     
@@ -61,7 +64,7 @@ TC-007 Verify if a user is able to filter bus according to their preference and 
     Clear Filter           
 
 TC-008 Verify if a user is able to filter bus according to their ratings
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum
     ${last_element}    Get All Bus Rating
     ${top_rating}    Get Top Rated Bus
@@ -69,7 +72,7 @@ TC-008 Verify if a user is able to filter bus according to their ratings
  
 
 TC-009 Verify the departure date of buses should be same as entered
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    Coimbatore    Trivandrum
     ${allBusDate}    ${numberOfBuses}    Get All Bus Date
     ${inputDate}    Get Input Date
@@ -77,13 +80,13 @@ TC-009 Verify the departure date of buses should be same as entered
 
 
 TC-010 Verify Initial toggle to shortest duration
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    ${from}    ${to}
     Toggle Fastest Sorting And Validate 
 
 
 TC-011 Verify if a user is able to filter bus according to their drop time
-    Open Make My Trip As
+    # Open Make My Trip As
     Search Buses    ${from}    ${to}    ${date}
     Select Filter    Drop time    6 AM to 11 AM
     Filter time-00
