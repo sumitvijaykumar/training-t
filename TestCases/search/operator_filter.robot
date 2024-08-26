@@ -44,8 +44,8 @@ TC_001
     Open Make My Trip As
     Search Buses
     Select Filter    Travel Operators
-    Get filtered Bus Names    Travel Operators
-    Clear Travel operator Filter     Travel Operators
+    Get filtered Bus Names And Verify    Travel Operators
+    Clear Travel Operator Filter     Travel Operators
 
 
 TC_002
@@ -84,4 +84,4 @@ TC_002
     Select Filter    Travel Operators
     Select Multiple Options In Filter   Travel Operators
     Check Previous Filter Present Or Not
-    Clear Travel operator Filter     Travel Operators     
+    Clear Travel Operator Filter     Travel Operators     

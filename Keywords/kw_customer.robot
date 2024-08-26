@@ -177,7 +177,7 @@ Validating Data
 
 
 
-et filtered Bus Names And Verify
+Get filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
     [Arguments]     ${filterType}
