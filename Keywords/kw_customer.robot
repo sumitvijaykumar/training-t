@@ -387,18 +387,7 @@ Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
 
-Filter time
-    @{totaltime}    Create List
-    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
-    ${numberOfBuses}    Evaluate     $numberOfBuses+1
-
-    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-    ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
-    Append To List     ${totaltime}    ${time}
-    END
-    Sort List    ${totaltime}
-    Log    Sorted List (Ascending): ${totaltime}   
+   
 
 
 
@@ -417,15 +406,51 @@ Clear Filter
     Wait Until Element Is Visible    //p[contains(@class,'disabledGrey')]    10s
     
 
-# Filter time
-#     @{totaltime}    Create List
-#     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-#     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
-#     ${numberOfBuses}    Evaluate     $numberOfBuses+1
+Verify Filter time
+    [Arguments]    ${filterExactText}    
+    @{totaltime}    Create List
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBuses}    Evaluate     $numberOfBuses+1
 
-#     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-#     ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
-#     Append To List     ${totaltime}    ${time}
-#     END
-#     Sort List    ${totaltime}
-#     Log    Sorted List (Ascending): ${totaltime}   
+    FOR    ${index}    IN RANGE     1    ${numberOfBuses}
+    ${time}     Get Text       (//div[@class='line-border-top']/..//span[contains(@class,'latoRegular')])[${index}]          # node with id in it, exact 16 matches.
+    ${time}    Set Variable    ${time.replace(':','')}    
+    Append To List     ${totaltime}    ${time}
+    END
+    Sort List    ${totaltime}
+    Log    Sorted List (Ascending): ${totaltime}
+    ${numberOfBuses}    Evaluate     $numberOfBuses-1
+    
+    IF    '${filterExactText}' == '6 AM to 11 AM'
+        FOR    ${index}    IN RANGE    0    ${numberOfBuses}
+            IF    "'${totaltime}[${index}]' < 1100 and '${totaltime}[${index}]' > 0559"
+                Log    ${totaltime}[${index}] is within the range
+            ELSE
+                Log    ${totaltime}[${index}] is not within the range
+            END
+        END
+    ELSE IF    '${filterExactText}' == '11 AM to 6 PM'
+        FOR    ${index}    IN RANGE    0    ${numberOfBuses}
+            IF    "'${totaltime}[${index}]' < 1800 and '${totaltime}[${index}]' >= 1100"
+                Log    ${totaltime}[${index}] is within the range
+            ELSE
+                Log    ${totaltime}[${index}] is not within the range
+            END
+        END
+    ELSE IF    '${filterExactText}' == '6 PM to 11 PM'
+        FOR    ${index}    IN RANGE    0    ${numberOfBuses}
+            IF    "'${totaltime}[${index}]' < 2300 and '${totaltime}[${index}]' >= 1800"
+                Log    ${totaltime}[${index}] is within the range
+            ELSE
+                Log    ${totaltime}[${index}] is not within the range
+            END
+        END
+    ELSE IF    '${filterExactText}' == '11 PM to 6 AM'
+        FOR    ${index}    IN RANGE    0    ${numberOfBuses}
+            IF    "'${totaltime}[${index}]' < 0600 and '${totaltime}[${index}]' >= 2300"
+                Log    ${totaltime}[${index}] is within the range
+            ELSE
+                Log    ${totaltime}[${index}] is not within the range
+            END
+        END  
