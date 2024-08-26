@@ -15,3 +15,44 @@ pickup_point_filter:
     Place: Ettimadai
 
 
+Ac_nonac_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+
+
+operator_filter:
+  TC_001:
+    FROM : Coimbatore
+    TO : Trivandrum
+    VALUE : A1 Travels
+
+  TC_002:
+    FROM : Coimbatore
+    TO : Trivandrum
+    VALUE: A1 Travels
+    VALUE_2 : KSRTC (Kerala)
+Drop_point_filter:
+  TC_001:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT: Pattam
+
+  TC_002:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT1 : Pattam
+    DROP_POINT2: Ulloor
+
+departure_date_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
