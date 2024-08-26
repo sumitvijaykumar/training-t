@@ -181,7 +181,7 @@ Get filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
     [Arguments]     ${filterType}
-    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+    ${BUS_NAME}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
 
     @{allBusName}    Create List
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
