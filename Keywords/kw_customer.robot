@@ -1,7 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    Collections
-Variables    ../Variables/data.yaml
    
 *** Keywords ***
 Search Buses
@@ -129,7 +128,7 @@ Get All Bus Date
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
     FOR    ${index}    IN RANGE     1    ${numberOfBuses}
-        ${busDate}     Get Text       (//span[contains(@class,"latoBlack blackText")]/following-sibling::span[contains(@class,"secondaryTxt")])[${index}]          # node with id in it, exact 16 matches.
+        ${busDate}     Get Text       (//span[contains(@class,"latoBlack blackText")]/following-sibling::span[contains(@class,"secondaryTxt")])[${index}]          
         Append To List     ${allBusDate}    ${busDate}
     END
     Log    ${allBusDate}
@@ -262,12 +261,12 @@ Verify Seat Type
 
     [Arguments]    ${numberOfBuses}    ${filterType}     
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'${${TEST_NAME}.SEAT_TYPE}')])
+    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
     ${numberOfBuses}    Evaluate     $numberOfBuses-1
     Should Be Equal    ${numberOfBuses}    ${busesnumber}
     Run Keyword And Ignore Error    Click Element     toggle_buses
-    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='${${TEST_NAME}.SEAT_TYPE}']
-    # Wait Until Element Is Visible    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIcon")]/following-sibling::span[text()='${${TEST_NAME}.SEAT_TYPE}']    5s
+    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+
     Sleep    5s
 
 
