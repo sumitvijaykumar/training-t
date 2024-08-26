@@ -286,7 +286,9 @@ Pickups point
 undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
-Toggle Fastest Sorting And Validate
+
+Toggle Fastest up Sorting and validate
+    [Arguments]    ${ascOrder}
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
@@ -294,18 +296,22 @@ Toggle Fastest Sorting And Validate
     Log    :${durationsofKsrtc} 
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
-    @{firstDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
+    @{firstDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
     Log   Current list: ${firstDurations}
     Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
 
+Toggle Fastest down Sorting and Validate
+
+    [Arguments]    ${dscOrder}
+    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
     @{durationsofKsrtc}       Get Bus Durations of KSRTC       
     Log    :${durationsofKsrtc} 
     @{durationsofPrivate}       Get Bus Durations of Private     
     Log    :${durationsofPrivate} 
-    @{secondDurations}    Join Lists Using Combine Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
-    Validate Durations Sorted    ${secondDurations}  order=${dscOrder}
+    @{secondDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
+    Validate Durations Sorted   ${secondDurations}  order=${dscOrder}
 
 Wait Until Buses Are Loaded
     Wait Until Element Is Not Visible    //div[@class="loader"]    timeout=20s
@@ -329,7 +335,7 @@ Get Bus Durations of KSRTC
         Append To List    ${durationsofKsrtc}    ${totalDuration}
     END
     Log    KSRTC Durations: ${durationsofKsrtc}
-    [Return]    ${durationsofKsrtc}
+    [RETURN]     ${durationsofKsrtc}
 
 Get Bus Durations of Private
     ${durationsofPrivate}    Create List
@@ -348,10 +354,9 @@ Get Bus Durations of Private
         Append To List    ${durationsofPrivate}    ${totalDuration}
     END
     Log    Private Durations: ${durationsofPrivate}
-    [Return]    ${durationsofPrivate}
+    [RETURN]    ${durationsofPrivate}
 
-Join Lists Using Combine Lists
-
+Join Lists Using Create Lists
     [Arguments]    ${durationsofKsrtc}    ${durationsofPrivate}
     Log    ${durationsofKsrtc}  
     Log    ${durationsofPrivate}
@@ -359,9 +364,9 @@ Join Lists Using Combine Lists
     Log     ${AllBusDuration}   
     Log     ${AllBusDuration[0]}
     Log   ${AllBusDuration[1]}
-    [Return]    ${AllBusDuration}
+    [RETURN]     ${AllBusDuration}
 
-Validate Durations Sorted
+Validate Durations Sorted 
     [Arguments]    ${AllBusDuration}     ${order}=${None}
     Log  Durations: ${AllBusDuration}
     ${sortedDurationsFinal}     Copy List     ${AllBusDuration}
@@ -369,7 +374,7 @@ Validate Durations Sorted
     Log      ${sortedDurationsFinal[0]} 
     Sort List       ${sortedDurationsFinal[1]}   
     Log      ${sortedDurationsFinal[1]} 
-    Log  ${sortedDurationsFinal} 
+    Log  ${sortedDurationsFinal}
     Run Keyword If         '${order}' == 'descending'     Reverse List     ${sortedDurationsFinal[0]}
     Run Keyword If        '${order}' == 'descending'     Reverse List    ${sortedDurationsFinal[1]} 
     Should Be Equal    ${sortedDurationsFinal}     ${AllBusDuration}
