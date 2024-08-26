@@ -167,6 +167,14 @@ Get Input Date
     ${dateMonth}    Convert To Upper Case    ${dateMonth}
     RETURN    ${dateMonth}
 
+Click todays date
+    Click Element    //div[contains(@class,"bsw_inputBox dates")]
+    Wait Until Element Is Visible    //li[contains(@id,"today_date")]    5s
+    Click Element    //li[contains(@id,"today_date")]
+    Sleep    3s
+    Click Element    //button[contains(@class,"widgetSearchBtn")]
+    Wait Until Element Is Visible     //div[@class="busListingContainer"]//p[contains(text(),'found')]
+
 Validating Data
     [Arguments]    ${allBusDate}    ${numberOfBuses}    ${dateMonth}
     ${numberOfBuses}    Evaluate     $numberOfBuses-1

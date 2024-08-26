@@ -46,4 +46,10 @@ Drop_point_filter:
     DROP_POINT1 : Pattam
     DROP_POINT2: Ulloor
 
-  
+departure_date_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
