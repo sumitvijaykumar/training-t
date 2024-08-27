@@ -6,7 +6,7 @@ Variables    ${EXECDIR}/Variables/search_data.yaml
    
 *** Keywords ***
 Search Buses
-    [Arguments]    ${fromCity}    ${toCity}     ${date}=today's date
+    [Arguments]    ${date}=today's date
     ${fromCity}        Set Variable     ${${SUITE_NAME}.${TEST_NAME}.FROM}
     ${toCity}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.TO}
 
