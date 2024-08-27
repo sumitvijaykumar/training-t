@@ -13,12 +13,12 @@ Open Make My Trip As
 
 Select Filter
 
-    [Arguments]     ${filterType}
-    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+    [Arguments]     ${filterType}       ${filterExactText}=''
+    ${filterExactTextFinal}          Set Variable If    ${filterExactText}==''      ${${SUITE_NAME}.${TEST_NAME}.VALUE}          ${filterExactText}
     # take the initial count
     Click Element     toggle_buses
     ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
-    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactTextFinal}']
     Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
     #wait till its not the previous count or wait till elemnt disappears.
     sleep   10s

@@ -1,10 +1,12 @@
 *** Settings ***
 Library    SeleniumLibrary
 Library    Collections
+Library    String
+Variables    ${EXECDIR}/Variables/search_data.yaml
    
 *** Keywords ***
 Search Buses
-    [Arguments]     ${date}=today's date
+    [Arguments]    ${fromCity}    ${toCity}     ${date}=today's date
     ${fromCity}        Set Variable     ${${SUITE_NAME}.${TEST_NAME}.FROM}
     ${toCity}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.TO}
 
@@ -336,14 +338,21 @@ Get All Bus Id
 
 Verify Seat Type
 
-    [Arguments]    ${numberOfBuses}    ${filterType}     
+    [Arguments]    ${numberOfBuses}    ${filterType}    ${filterExactText}    
     Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'Sleeper')])
+    ${busesnumber}    Get Element Count   (//div[contains(@id,"bus_")]//div[@class="makeFlex false"]//p[contains(text(),'${filterExactText}')])
     ${numberOfBuses}    Evaluate     $numberOfBuses-1
     Should Be Equal    ${numberOfBuses}    ${busesnumber}
     Run Keyword And Ignore Error    Click Element     toggle_buses
-    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='Sleeper']
+    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='${filterExactText}']
+    Sleep    5s
 
+Select Other Filter
+
+    [Arguments]    ${filterType}    ${filterExactText}    ${filterText}
+    Run Keyword And Ignore Error    Click Element    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"seaterIconActive")]/following-sibling::span[text()='${filterExactText}']
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[not(contains(@class,"seaterIconActive"))]/following-sibling::span[text()='${filterText}']
+    Wait Until Element Is Not Visible    //div[contains(text(),'${filterType}')]/../..//span[contains(@class,"sleeperIconActive")]/following-sibling::span[text()='${filterExactText}']    10s
     Sleep    5s
 
 
@@ -516,13 +525,4 @@ Verify Filter time
             ELSE
                 Log    ${totaltime}[${index}] is not within the range
             END
-        END 
-
-Verify Multiple Selection in Pickup Points
-    ${place}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.Place}
-    Click Element   //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'${place}')]
-    Click Element    //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'Ukkadam')]
-    Wait Until Element Is Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]    3s   
-    Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]
-    Sleep    5s
- 
+        END  

@@ -1,11 +1,18 @@
-Clear_all_filter:
-  TC_001:
-    FROM: Coimbatore 
-    TO: Trivandrum
+# Demo:
+#   TC_001:
+#     FROM: Coimbatore 
+#     TO: Trivandrum
 
+#   TC_002:
+#     FROM: Cochin 
+#     TO: Trivandrum
+
+
+drop_time_filter:
   TC_002:
-    FROM: Coimbatore
+    FROM: Coimbatoor
     TO: Trivandrum
+    DROPTIME: 11 PM to 6 AM
 
 
 pickup_point_filter:
@@ -70,12 +77,7 @@ rating_filter:
     TO: Trivandrum
 
 
-price_filter:
-  TC_001:
-    FROM: Coimbatore
-    TO: Trivandrum
-  TC_002:
-    FROM: Coimbatore
-    TO: Trivandrum
-
+suiteName:
+  testName:
+    value:
 
