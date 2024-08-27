@@ -522,7 +522,7 @@ Verify Multiple Selection in Pickup Points
     ${place}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.Place}
     Click Element   //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'${place}')]
     Click Element    //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'Ukkadam')]
-    Wait Until Element Is Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]    3s   
-    Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]
+    Wait Until Element Is Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'${place}')]    3s   
+    Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'${place}')]
     Sleep    5s
  
