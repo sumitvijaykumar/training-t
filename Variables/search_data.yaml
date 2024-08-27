@@ -1,14 +1,38 @@
-seat_type_filter:
+# Demo:
+#   TC_001:
+#     FROM: Coimbatore 
+#     TO: Trivandrum
+
+#   TC_002:
+#     FROM: Cochin 
+#     TO: Trivandrum
+
+
+drop_time_filter:
+  TC_002:
+    FROM: Coimbatoor
+    TO: Trivandrum
+    DROPTIME: 11 PM to 6 AM
+
+
+pickup_point_filter:
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+    Place: Ettimadai
+
+
+Ac_nonac_filter:
   TC_001:
     FROM: Coimbatore 
     TO: Trivandrum
 
   TC_002:
-    FROM: Coimbatore 
+    FROM: Cochin 
     TO: Trivandrum
 
 
-# suiteName:
-#   testName:
-#     value:
+suiteName:
+  testName:
+    value:
 
