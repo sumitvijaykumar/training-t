@@ -399,6 +399,17 @@ Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
 
+Click Cheapest Button And Verify
+    
+    Click Element    //li[contains(text(),'Cheapest')]
+    ${class}=    Get Element Attribute    //li[contains(text(),'Cheapest')]    class
+    Should Contain    ${class}    activeItem    "Cheapest button should be active"
+
+Click Another Sort Button And Verify
+    Click Element     //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]   
+    ${class}=    Get Element Attribute    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Cheapest')]   class
+    Should Not Contain     ${class}    activeItem    "Cheapest button should not be active"
+
    
 
 
