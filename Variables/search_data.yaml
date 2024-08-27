@@ -1,14 +1,14 @@
-Demo:
+seat_type_filter:
   TC_001:
     FROM: Coimbatore 
     TO: Trivandrum
 
   TC_002:
-    FROM: Cochin 
+    FROM: Coimbatore 
     TO: Trivandrum
 
 
-suiteName:
-  testName:
-    value:
+# suiteName:
+#   testName:
+#     value:
 
