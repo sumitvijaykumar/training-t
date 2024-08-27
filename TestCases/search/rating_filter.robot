@@ -1,8 +1,11 @@
 *** Settings ***
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
-Resource    ../Keywords/common.robot
+Resource    ../../Keywords/common.robot
+Resource    ../../Keywords/kw_customer.robot
+Variables    ../../Variables/search_data.yaml
 Library    String
+
 *** Test Cases ***
 
 TC_001
@@ -22,14 +25,14 @@ TC_001
     ...    Expected: The last element of sorted array and the top rated are equal
 
     Open Make My Trip As
-    Search Buses    Coimbatore    Trivandrum
+    Search Buses    
     ${last_element}    Get All Bus Rating
     ${top_rating}    Get Top Rated Bus
     Check If Ratings Are Equal    ${last_element}    ${top_rating}
 
 #verify that all buses are displayed when user unselects top rated icon again.
 
-TC-002
+TC_002
     [Documentation]     Verify  all buses are displayed when user unselects top rated icon again
     ...    Author: Ashly
     ...    steps
@@ -48,7 +51,7 @@ TC-002
     ...    Expected: The number of buses before selecting toprated and after unselecting toprated are the same
     
     Open Make My Trip As
-    Search Buses    Coimbatore    Trivandrum
+    Search Buses    
     ${numberOfBuses}    Get All Bus Rating
     ${numberOfBusesafter}    Get All Bus Rating after unselect
     Verify number of buses are equal    ${numberOfBuses}    ${numberOfBusesafter} 

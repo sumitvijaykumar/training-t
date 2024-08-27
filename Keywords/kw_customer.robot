@@ -439,6 +439,17 @@ Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
 
+Click Cheapest Button And Verify
+    
+    Click Element    //li[contains(text(),'Cheapest')]
+    ${class}=    Get Element Attribute    //li[contains(text(),'Cheapest')]    class
+    Should Contain    ${class}    activeItem    "Cheapest button should be active"
+
+Click Another Sort Button And Verify
+    Click Element     //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]   
+    ${class}=    Get Element Attribute    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Cheapest')]   class
+    Should Not Contain     ${class}    activeItem    "Cheapest button should not be active"
+
    
 
 
@@ -515,6 +526,16 @@ Verify Multiple Selection in Pickup Points
     Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]
     Sleep    5s
  
+
+
+Verify multiple time slot
+    ${droptime}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.DROPTIME}
+    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='6 AM to 11 AM']
+    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='${droptime}']
+    Wait Until Element Is Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']  
+    Element Should Be Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']
+    Sleep    10s
+
 Select Relevance
     Run Keyword And Ignore Error    Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Wait Until Element Is Visible  //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]

@@ -15,6 +15,7 @@ TC_001
     ...  search busess from and to cities
     ...  select the drop point
     ...  verify results shown has the selected drop point
+    [Tags]    selectone
 
     Open Make My Trip As
     Search Buses   
@@ -33,6 +34,7 @@ TC_002
     ...    search buses from and to cities
     ...    select two or more drop points
     ...    check user can select two or more drop points
+    [Tags]    selectmany
     
     Open Make My Trip As
     Search Buses  
