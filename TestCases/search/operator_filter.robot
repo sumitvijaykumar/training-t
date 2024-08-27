@@ -35,8 +35,8 @@ TC_001
     ...    8.  User hould be able to view and take count of buses available before and after filter applying
     ...    9.  List of filtered buses should display
     ...    10. The selected filter and bus name should match
-    ...    10. User should be able to click on clear button to undo all the filters
-    ...    11. The browser should exit
+    ...    11. User should be able to click on clear button to undo all the filters
+    ...    12. The browser should exit
     [Tags]      SelectOne 
 
 
@@ -82,6 +82,6 @@ TC_002
     Open Make My Trip As
     Search Buses
     Select Filter    Travel Operators
-    Select Multiple Options In Filter   Travel Operators
+    Select Multiple Options In Filter    Travel Operators
     Check Previous Filter Present Or Not
     Clear Travel Operator Filter     Travel Operators     
