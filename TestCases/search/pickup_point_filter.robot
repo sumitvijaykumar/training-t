@@ -1,14 +1,34 @@
 *** Settings ***
-Resource    ${EXECDIR}/Keywords/common.robot
-Resource     ${EXECDIR}/Keywords/kw_customer.robot
-Resource    ../Keywords/common.robot
+
+Resource    ../../Keywords/kw_customer.robot
+Resource    ../../Keywords/common.robot
+Variables    ../../Variables/search_data.yaml
+
 *** Test Cases ***
 
-TC_001_Verify if a user is able to filter bus according to their pick-up point
+TC_001
     
     Open Make My Trip As
-    Search Buses    Coimbatore    Trivandrum             
+    Search Buses      
     Select Filter     Pick up point     Ettimadai
-    Pickups point    Ettimadai
+    Verify Pickups point    Ettimadai
 
-#
+
+TC_002
+    [Documentation] 
+    ...    Author: J Sreejith
+    ...    Steps :
+    ...    1.Open the Browser and Navigate to MakeMyTrip:
+    ...    2.Select Multiple Pickup Points
+    ...    3.Verify Multiple Selection
+    ...
+    ...    Expected result :
+    ...    1.MakeMy Trip should be opened
+    ...    2.Multiple pickup points are selected
+    ...    3.Ensure that if Ettimadai is selected first and then Ukkadam is selected, both pickup points remain selected.
+    ...    
+    [Tags]    SelectMany
+    Open Make My Trip As
+    Search Buses
+    Verify Multiple Selection in Pickup Points
+    
