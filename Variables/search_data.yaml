@@ -28,7 +28,7 @@ Ac_nonac_filter:
     TO: Trivandrum
 
   TC_002:
-    FROM: Cochin 
+    FROM: Coimbatore 
     TO: Trivandrum
 
 
@@ -76,30 +76,8 @@ rating_filter:
     FROM: Coimbatore 
     TO: Trivandrum
 
-duration_filter:
-  TC_001:
-    FROM: Coimbatore 
-    TO: Trivandrum
-  TC_002:
-    FROM: Coimbatore 
-    TO: Trivandrum
-  TC_003:
-    FROM: Coimbatore 
-    TO: Trivandrum
-price_filter:
-  TC_001:
-    FROM: Coimbatore
-    TO: Trivandrum
-  TC_002:
-    FROM: Coimbatore
-    TO: Trivandrum
 
-seat_type_filter:
-  TC_001:
-    FROM: Coimbatore 
-    TO: Trivandrum
-
-  TC_002:
-    FROM: Coimbatore 
-    TO: Trivandrum
+suiteName:
+  testName:
+    value:
 
