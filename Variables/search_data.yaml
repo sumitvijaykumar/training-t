@@ -32,7 +32,66 @@ Ac_nonac_filter:
     TO: Trivandrum
 
 
-suiteName:
-  testName:
-    value:
+operator_filter:
+  TC_001:
+    FROM : Coimbatore
+    TO : Trivandrum
+    VALUE : A1 Travels
+
+  TC_002:
+    FROM : Coimbatore
+    TO : Trivandrum
+    VALUE: A1 Travels
+    VALUE_2 : KSRTC (Kerala)
+
+
+Drop_point_filter:
+  TC_001:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT: Pattam
+
+
+  TC_002:
+    FROM: Coimbatore
+    TO: Trivandrum
+    DROP_POINT1 : Pattam
+    DROP_POINT2: Ulloor
+
+
+departure_date_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+
+rating_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
+duration_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_003:
+    FROM: Coimbatore 
+    TO: Trivandrum
+price_filter:
+  TC_001:
+    FROM: Coimbatore
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore
+    TO: Trivandrum
+
 
