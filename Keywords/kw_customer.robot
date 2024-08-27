@@ -466,3 +466,12 @@ Verify Filter time
                 Log    ${totaltime}[${index}] is not within the range
             END
         END  
+
+
+Verify multiple time slot
+    ${droptime}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.DROPTIME}
+    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='6 AM to 11 AM']
+    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='${droptime}']
+    Wait Until Element Is Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']  
+    Element Should Be Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']
+    Sleep    10s
