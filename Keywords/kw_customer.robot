@@ -254,7 +254,35 @@ Get Top Rated Bus
 
 Check If Ratings Are Equal
     [Arguments]    ${last_element}    ${top_rating}
-    Should Be Equal    ${last_element}    ${top_rating}    
+    Should Be Equal    ${last_element}    ${top_rating}  
+
+Get All Bus Rating after unselect
+    Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    Wait Until Element Is Visible    //div[@class='slick-track']/div[contains(@class,'slick-current')]//div[contains(@style,' display: inline-block')]    10s
+    Click Element    //div[@class='slick-track']/div[contains(@class,'slick-current')]//div[contains(@style,' display: inline-block')]
+
+    Wait Until Element Is Visible    //div[contains(@class,'filter-slider-item selectedCard') and contains(@style,'rgb(210, 251, 236) 0%,')]    20s
+    Click Element    //div[contains(@class,'filter-slider-item selectedCard') and contains(@style,'rgb(210, 251, 236) 0%,')]
+    Wait Until Page Contains Element     //div[@class="busListingContainer"]//p[contains(text(),'found')]    10s
+
+
+    @{allBusRatingafter}    Create List
+    # Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBusesafter}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBusesafter}    Evaluate     $numberOfBusesafter+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBusesafter}
+        ${busRating}     Get Text       (//li[@class='appendRight10']//span[contains(text(),'.')])[${index}]
+        Append To List     ${allBusRatingafter}    ${busRating}
+    END
+    Sort List    ${allBusRatingafter}
+    Log    ${allBusRatingafter}
+
+Verify number of buses are equal
+    [Arguments]    ${numberOfBuses}    ${numberOfBusesafter}
+    Should Be Equal    ${numberOfBuses}    ${numberOfBusesafter}
+
+
+
 
 
 Select drop point

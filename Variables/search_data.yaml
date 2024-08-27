@@ -56,3 +56,12 @@ departure_date_filter:
   TC_002:
     FROM: Coimbatore 
     TO: Trivandrum
+
+rating_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+
