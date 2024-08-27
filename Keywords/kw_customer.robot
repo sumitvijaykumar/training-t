@@ -515,3 +515,12 @@ Verify Multiple Selection in Pickup Points
     Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]
     Sleep    5s
  
+Select Relevance
+    Run Keyword And Ignore Error    Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    Wait Until Element Is Visible  //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
+    Click Element   //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
+
+verify relevance is not toggled
+    Click Element   //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
+    ${is_selected}    Run Keyword And Return Status    Element Should Be Visible    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]/span[contains(@class,"appendLeft6")]
+    Should Be True    ${is_selected}    Relevance button should not toggle back to an upward arrow

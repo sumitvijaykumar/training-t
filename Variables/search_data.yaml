@@ -65,3 +65,13 @@ rating_filter:
     FROM: Coimbatore 
     TO: Trivandrum
 
+duration_filter:
+  TC_001:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_002:
+    FROM: Coimbatore 
+    TO: Trivandrum
+  TC_003:
+    FROM: Coimbatore 
+    TO: Trivandrum
