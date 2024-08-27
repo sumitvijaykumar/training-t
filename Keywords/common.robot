@@ -13,7 +13,8 @@ Open Make My Trip As
 
 Select Filter
 
-    [Arguments]     ${filterType}     ${filterExactText}
+    [Arguments]     ${filterType}
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
     # take the initial count
     Click Element     toggle_buses
     ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied

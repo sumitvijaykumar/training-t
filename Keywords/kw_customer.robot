@@ -124,14 +124,26 @@ Get all bus
     END
     Log   ${allACBus}
     ${str}  Remove String  ${filtername}  /
+    ${strUpper}   Convert To Upper Case     ${str}
+    ${filternameUpper}   Convert To Upper Case     ${filtername}
     Set Test Variable    ${str}    ${str}
     Set Test Variable    @{allACBus}   @{allACBus}
-    Set Test Variable    ${filtername}  ${filtername} 
+    Set Test Variable    ${filtername}  ${filtername}
+    Set Test Variable    ${strUpper}  ${strUpper} 
+    Set Test Variable    ${filternameUpper}  ${filternameUpper}  
 
 Verify filter
+    IF  $str== 'Non AC'
+      ${text}   Get Element Attribute    //div[text()='AC']/../..//span[text()='AC']/parent::div  class
+      Log    ${text}
+      Should Not Contain     ${text}    activeSlot
+    ELSE IF  $str== 'AC'
+        ${text}   Get Element Attribute    //div[text()='AC']/../..//span[text()='Non AC']/parent::div  class
+        Should Not Contain    ${text}    activeSlot 
+    END
     Log  ${allACBus}
     FOR    ${element}    IN    @{allACBus}
-        Should Contain Any  ${element}    ${str}    ${filtername}
+        Should Contain Any  ${element}    ${str}    ${filtername}   ${strUpper}   ${filternameUpper}
     END
 
 Get All Bus Date
@@ -155,6 +167,14 @@ Get Input Date
     ${dateMonth}    Convert To Upper Case    ${dateMonth}
     RETURN    ${dateMonth}
 
+Click todays date
+    Click Element    //div[contains(@class,"bsw_inputBox dates")]
+    Wait Until Element Is Visible    //li[contains(@id,"today_date")]    5s
+    Click Element    //li[contains(@id,"today_date")]
+    Sleep    3s
+    Click Element    //button[contains(@class,"widgetSearchBtn")]
+    Wait Until Element Is Visible     //div[@class="busListingContainer"]//p[contains(text(),'found')]
+
 Validating Data
     [Arguments]    ${allBusDate}    ${numberOfBuses}    ${dateMonth}
     ${numberOfBuses}    Evaluate     $numberOfBuses-1
@@ -165,10 +185,12 @@ Validating Data
 
 
 
-et filtered Bus Names And Verify
+Get filtered Bus Names And Verify
     [Documentation]  Adding Travel Operator's name into a list and comparing them with selected filter name
 
-    [Arguments]    ${filterType}   ${BUS_NAME}   
+    [Arguments]     ${filterType}
+    ${BUS_NAME}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+
     @{allBusName}    Create List
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     ${numberOfBuses}     Get Element Count    //div[starts-with(@id,"bus_")]//p[text()="${BUS_NAME}"]
@@ -190,7 +212,20 @@ Clear Travel Operator Filter
     #Click Element     //div[@class="filterContainer"]//p[text()="CLEAR ALL"]
     Click Element      //div[text()="${filterType}"]/following-sibling::div[text()="CLEAR"]
 
+Select Multiple Options In Filter
 
+    [Arguments]     ${filterType}
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE_2}
+
+    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+    
+Check Previous Filter Present Or Not
+
+    [Arguments]    
+    ${filterExactText}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.VALUE}
+     
+    ${class_attr}=    Get Element Attribute      //span[text()='A1 Travels']/parent::div[contains(@class,'pushLeft')]     class
+    Should Contain       ${class_attr}      selected
 
 
 
@@ -219,14 +254,44 @@ Get Top Rated Bus
 
 Check If Ratings Are Equal
     [Arguments]    ${last_element}    ${top_rating}
-    Should Be Equal    ${last_element}    ${top_rating}    
+    Should Be Equal    ${last_element}    ${top_rating}  
+
+Get All Bus Rating after unselect
+    Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    Wait Until Element Is Visible    //div[@class='slick-track']/div[contains(@class,'slick-current')]//div[contains(@style,' display: inline-block')]    10s
+    Click Element    //div[@class='slick-track']/div[contains(@class,'slick-current')]//div[contains(@style,' display: inline-block')]
+
+    Wait Until Element Is Visible    //div[contains(@class,'filter-slider-item selectedCard') and contains(@style,'rgb(210, 251, 236) 0%,')]    20s
+    Click Element    //div[contains(@class,'filter-slider-item selectedCard') and contains(@style,'rgb(210, 251, 236) 0%,')]
+    Wait Until Page Contains Element     //div[@class="busListingContainer"]//p[contains(text(),'found')]    10s
+
+
+    @{allBusRatingafter}    Create List
+    # Run Keyword And Ignore Error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
+    ${numberOfBusesafter}     Get Element Count    //div[starts-with(@id,"bus_")]
+    ${numberOfBusesafter}    Evaluate     $numberOfBusesafter+1
+    FOR    ${index}    IN RANGE     1    ${numberOfBusesafter}
+        ${busRating}     Get Text       (//li[@class='appendRight10']//span[contains(text(),'.')])[${index}]
+        Append To List     ${allBusRatingafter}    ${busRating}
+    END
+    Sort List    ${allBusRatingafter}
+    Log    ${allBusRatingafter}
+
+Verify number of buses are equal
+    [Arguments]    ${numberOfBuses}    ${numberOfBusesafter}
+    Should Be Equal    ${numberOfBuses}    ${numberOfBusesafter}
+
+
+
 
 
 Select drop point
     [Arguments]     ${filterType}     ${filterExactText}
     # take the initial count
+    Scroll Element Into View    toggle_buses
     Click Element     toggle_buses
     ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+    Scroll Element Into View   //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}'] 
     Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
     Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
     #wait till its not the previous count or wait till elemnt disappears.
@@ -250,6 +315,10 @@ Verify drop point
     # Should Be Equal As Numbers    ${numberOfBuscard}    ${finalcount}
     # Should Be Equal    ${numberOfBuscard}    ${count}
     Sleep    3s
+
+verify multiple drop points selected
+    ${count}=    Get Element Count    //div[contains(text(),"Drop point")]/../..//div[contains(@class,"selected ")]
+    Should Be True    ${count}>1
 
 
 Get All Bus Id 
@@ -301,44 +370,33 @@ undo filter
     Run Keyword And Ignore Error    Click Element    //span[@class='logoContainer']//a[@class='chMmtLogo']
     Wait Until Element Is Visible    //nav//li[@class="menu_Buses"]    5s
 
-Toggle Fastest up Sorting and validate
-    [Arguments]    ${ascOrder}
+select fastest and get bus duration 
     run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
     Wait Until Buses Are Loaded
-    @{durationsofKsrtc}       Get Bus Durations of KSRTC       
+    ${busCount_Xpath_ksrtc}    Set Variable        //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']   
+    ${busCount_Xpath_private}    Set Variable    //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
+    @{durationsofKsrtc}       Get Durations of all buses    ${busCount_Xpath_ksrtc}        
     Log    :${durationsofKsrtc} 
-    @{durationsofPrivate}       Get Bus Durations of Private     
+    @{durationsofPrivate}       Get Durations of all buses    ${busCount_Xpath_private}   
     Log    :${durationsofPrivate} 
-    @{firstDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
-    Log   Current list: ${firstDurations}
-    Validate Durations Sorted    ${firstDurations}   order=${ascOrder}
-
-Toggle Fastest down Sorting and Validate
-
-    [Arguments]    ${dscOrder}
-    run keyword and ignore error     Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]
-    Wait Until Buses Are Loaded
-    @{durationsofKsrtc}       Get Bus Durations of KSRTC       
-    Log    :${durationsofKsrtc} 
-    @{durationsofPrivate}       Get Bus Durations of Private     
-    Log    :${durationsofPrivate} 
-    @{secondDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate} 
-    Validate Durations Sorted   ${secondDurations}  order=${dscOrder}
+    @{completeDurations}    Join Lists Using Create Lists    ${durationsofKsrtc}    ${durationsofPrivate}  
+    Log   Current list: ${completeDurations}
+    [RETURN]    ${completeDurations}
 
 Wait Until Buses Are Loaded
     Wait Until Element Is Not Visible    //div[@class="loader"]    timeout=20s
     Wait Until Element Is Visible        //div[@class="busCardContainer "]//div[contains(@class,"makeFlex false")][1]    timeout=20s
     Wait Until Page Contains Element    //div[contains(@class,'secondaryTxt')]    timeout=20s
 
-Get Bus Durations of KSRTC  
-    ${durationsofKsrtc}    Create List
-    Wait Until Element Is Visible  //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']
-    ${numberOfBuses}     Get Element Count    //p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt']
+Get Durations of all buses  
+    [Arguments]       ${busCount_Xpath}    
+    ${durationOfAllBuses}    Create List
+    Wait Until Element Is Visible  ${busCount_Xpath}
+    ${numberOfBuses}     Get Element Count    ${busCount_Xpath}
     ${numberOfBuses}    Evaluate     $numberOfBuses+1
     FOR    ${index}    IN RANGE    1    ${numberOfBuses}
-        ${durationText}    Get Text    (//p[contains(text(),"KSRTC")]/ancestor::div[@class='makeFlex false']//div[@class='font14 secondaryTxt'])[${index}]
+        ${durationText}    Get Text    (${busCount_Xpath})[${index}]
         ${hours}    Set Variable    0
         ${minutes}  Set Variable    0
         ${hoursText}   Evaluate    '''${durationText}'''.split("hrs")[0].strip()
@@ -346,29 +404,10 @@ Get Bus Durations of KSRTC
         ${minutesText}    Evaluate    '''${durationText}'''.split("hrs")[-1].split("mins")[0].strip()
         ${minutes}      Convert To Integer    ${minutesText}
         ${totalDuration}    Evaluate    (${hours}*60) + ${minutes} 
-        Append To List    ${durationsofKsrtc}    ${totalDuration}
+        Append To List    ${durationOfAllBuses}    ${totalDuration}
     END
-    Log    KSRTC Durations: ${durationsofKsrtc}
-    [RETURN]     ${durationsofKsrtc}
-
-Get Bus Durations of Private
-    ${durationsofPrivate}    Create List
-    Wait Until Element Is Visible      //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
-    ${numberOfBuses}     Get Element Count    //div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"]
-    ${numberOfBuses}    Evaluate     $numberOfBuses+1
-    FOR    ${index}    IN RANGE    1    ${numberOfBuses}
-        ${durationText}    Get Text    (//div[@class="rtcEnd"]/following-sibling::div[@class='busCardContainer ']//div[@class="font14 secondaryTxt"])[${index}]
-        ${hours}    Set Variable    0
-        ${minutes}  Set Variable    0
-        ${hoursText}   Evaluate    '''${durationText}'''.split("hrs")[0].strip()
-        ${hours}   Convert To Integer    ${hoursText}
-        ${minutesText}    Evaluate    '''${durationText}'''.split("hrs")[-1].split("mins")[0].strip()
-        ${minutes}      Convert To Integer    ${minutesText}
-        ${totalDuration}    Evaluate    (${hours}*60) + ${minutes} 
-        Append To List    ${durationsofPrivate}    ${totalDuration}
-    END
-    Log    Private Durations: ${durationsofPrivate}
-    [RETURN]    ${durationsofPrivate}
+    Log     Durations: ${durationOfAllBuses}
+    [RETURN]     ${durationOfAllBuses}
 
 Join Lists Using Create Lists
     [Arguments]    ${durationsofKsrtc}    ${durationsofPrivate}
@@ -395,9 +434,21 @@ Validate Durations Sorted
     Log      ${sortedDurationsFinal[0]} 
     Log  ${sortedDurationsFinal[1]} 
     Log   Sorted Durations: ${sortedDurationsFinal}
+
 Undo
     Click Element     toggle_buses
     Click Element    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
+
+Click Cheapest Button And Verify
+    
+    Click Element    //li[contains(text(),'Cheapest')]
+    ${class}=    Get Element Attribute    //li[contains(text(),'Cheapest')]    class
+    Should Contain    ${class}    activeItem    "Cheapest button should be active"
+
+Click Another Sort Button And Verify
+    Click Element     //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Fastest')]   
+    ${class}=    Get Element Attribute    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Cheapest')]   class
+    Should Not Contain     ${class}    activeItem    "Cheapest button should not be active"
 
    
 
@@ -465,4 +516,13 @@ Verify Filter time
             ELSE
                 Log    ${totaltime}[${index}] is not within the range
             END
-        END  
+        END 
+
+Verify Multiple Selection in Pickup Points
+    ${place}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.Place}
+    Click Element   //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'${place}')]
+    Click Element    //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'Ukkadam')]
+    Wait Until Element Is Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]    3s   
+    Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'Ettimadai')]
+    Sleep    5s
+ 
