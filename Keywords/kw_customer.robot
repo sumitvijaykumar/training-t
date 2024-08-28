@@ -287,17 +287,17 @@ Verify number of buses are equal
 
 
 
-Select drop point
-    [Arguments]     ${filterType}     ${filterExactText}
-    # take the initial count
-    Scroll Element Into View    toggle_buses
-    Click Element     toggle_buses
-    ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
-    Scroll Element Into View   //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}'] 
-    Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
-    Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
-    #wait till its not the previous count or wait till elemnt disappears.
-    sleep   3s
+# Select drop point
+#     [Arguments]     ${filterType}     ${filterExactText}
+#     # take the initial count
+#     Scroll Element Into View    toggle_buses
+#     Click Element     toggle_buses
+#     ${initialCount}    Get Element Count     //div[@class="busCardContainer "]     # maximum bus in search result, no filter applied
+#     Scroll Element Into View   //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}'] 
+#     Click Element    //div[contains(text(),'${filterType}')]/../..//span[text()='${filterExactText}']
+#     Wait Until Element Is Not Visible     //div[@class="busListingContainer"]//p[contains(text(),'found') and contains(text(),'${initialCount}')]
+#     #wait till its not the previous count or wait till elemnt disappears.
+#     sleep   3s
 
 
 Verify drop point
