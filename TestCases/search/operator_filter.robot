@@ -1,4 +1,7 @@
 *** Settings ***
+Library    SeleniumLibrary
+Library    Collections
+Library     String
 Resource    ${EXECDIR}/Keywords/common.robot
 Resource     ${EXECDIR}/Keywords/kw_customer.robot
 Resource    ../Keywords/common.robot
@@ -85,3 +88,93 @@ TC_002
     Select Multiple Options In Filter    Travel Operators
     Check Previous Filter Present Or Not
     Clear Travel Operator Filter     Travel Operators     
+
+
+TC_003
+    [Documentation]     Verify the user is able to filter Buses using "Bus Operator" filter type.
+    ...    AUTHOR: Archana Rajan
+    ...    STEPS:: 
+    ...    1.  Open the browser
+    ...    2.  Enter the EaseMyTrip link
+    ...    4.  Click on Bus Icon
+    ...    5.  Enter "From", "To" destinations  and click on today's date if  depature date is not specified
+    ...    6.  Click on "Search" button
+    ...    7.  Click on "A1 Travel" checkbox in "Bus Operators" filter
+    ...    8.  Take the count of Buses displayed  before and after clicking the filter, If the count is same then test fails
+    ...    9.  Create a empty list and add the Busname into it
+    ...    10. Display the list
+    ...    12. Click on "clear" to uncheck the selected filters
+    ...    13. Close the browser
+    ...   
+    ...    EXPECTED RESULTS:
+    ...    1.  The google browser should open and maximise the window
+    ...    2.  User should be able to access the MakeMyTrip Link
+    ...    3.  Click on the close buttons of pop-ups
+    ...    4.  User should enter the homepage and click on Bus Icon
+    ...    5.  User should be able to click and  "From", "To" destinations  and click on today's date if date is not specified in search page
+    ...    6.  User should be able to click on Search button and redirect into Selection page
+    ...    7.  User should be able to click on "A1 Travel" checkbox in "Travel Operators" filter
+    ...    8.  User hould be able to view and take count of buses available before and after filter applying
+    ...    9.  List of filtered buses should display
+    ...    10. The selected filter and bus name should match
+    ...    11. User should be able to click on clear button to undo all the filters
+    ...    12. The browser should exit 
+
+    Open Browser and enter EaseMyTrip link
+    Navigate into Bus Section and Enter Search Data   Coimbatore  Trivandrum     August    28
+    Click On Bus Operator Filter And Get The Results     Bus Operator       A1 Travels
+
+
+*** Keywords ***
+
+Open Browser and enter EaseMyTrip link
+
+    Open Browser      browser=chrome        url=https://www.easemytrip.com         
+    Maximize Browser Window
+    #Alert Should Be Present
+    
+
+Navigate into Bus Section and Enter Search Data 
+    [Arguments]   ${SourceCity}    ${DestinationCity}    ${month}    ${date}
+
+    #${day}    ${month}    Split String    ${date}    ${SPACE}
+
+    Click Element   //li[@class="bus mainMenu"]//span[text()="Bus"]
+    
+    Run Keyword And Ignore Error  Click Element     txtSrcCity
+    Wait Until Element Is Visible     //input[@placeholder='Source City']     5s
+    Input Text    txtSrcCity    ${SourceCity}
+    
+
+
+    
+    Wait Until Element Is Visible     //input[@placeholder='Destination City']         5s
+    Run Keyword And Ignore Error  Click Element     txtDesCity
+    Input Text    //input[@placeholder='Destination City']    ${DestinationCity}
+    Capture Element Screenshot        txtDesCity
+
+
+    Click Element    datepicker
+    Page Should Contain Element        //span[contains(@class,'month') and text()='${month}'] 
+    #${is_present}=    Run Keyword And Return Status    Page Should Contain Element    //span[contains(@class,'month') and text()='${month}'] 
+
+
+    ${datelocator}  Set Variable If   "${date}"==""
+    ...    //td[contains(@class,'current-day')]
+    ...    //a[contains(@class,'ui-state-default') and text()='${date}']      #//td[(@data-handler='selectDay')]/a[text()='28']     //a[contains(@class,'ui-state-default') and text()='28']
+    Click Element   ${datelocator}
+          
+    Click Element     srcbtn    #search button
+    sleep  10s
+
+
+Click On Bus Operator Filter And Get The Results
+
+    [Arguments]    ${BusFilter}    ${BusFilterExact}
+
+    #Wait Until Element Is Visible     //label[@title='${BusFilterExact}']       10s
+    Click Element                       //label[@title='${BusFilterExact}']      #//div[contains(text(),'${BusFilter}')]/ancestor::div[@class='left_pannel']//span[text()='${BusFilterExact}']       #//label[@title='A1 Travels']
+
+    @{allBusName}    Create List
+    ${numberOfBuses}     Get Element Count    //div[@class="list_box"]
+    Log    ${numberOfBuses}
