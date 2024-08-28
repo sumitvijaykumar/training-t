@@ -6,7 +6,7 @@ Variables    ${EXECDIR}/Variables/search_data.yaml
    
 *** Keywords ***
 Search Buses
-    [Arguments]    ${fromCity}    ${toCity}     ${date}=today's date
+    [Arguments]    ${date}=today's date
     ${fromCity}        Set Variable     ${${SUITE_NAME}.${TEST_NAME}.FROM}
     ${toCity}          Set Variable     ${${SUITE_NAME}.${TEST_NAME}.TO}
 
@@ -525,32 +525,4 @@ Verify Filter time
             ELSE
                 Log    ${totaltime}[${index}] is not within the range
             END
-        END 
-
-Verify Multiple Selection in Pickup Points
-    ${place}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.Place}
-    Click Element   //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'${place}')]
-    Click Element    //div[@class="makeFlex hrtlCenter"]//span[contains(text(),'Ukkadam')]
-    Wait Until Element Is Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'${place}')]    3s   
-    Element Should Be Visible    //div[contains(@class,'selected')]//descendant-or-self::span[contains(text(),'${place}')]
-    Sleep    5s
- 
-
-
-Verify multiple time slot
-    ${droptime}    Set Variable    ${${SUITE_NAME}.${TEST_NAME}.DROPTIME}
-    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='6 AM to 11 AM']
-    Click Element    //div[contains(text(),'Drop time')]/../..//span[text()='${droptime}']
-    Wait Until Element Is Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']  
-    Element Should Be Visible    //div[contains(text(),'Drop time')]/../..//div[contains(@class,'selected')]/span[text()='6 AM to 11 AM']
-    Sleep    10s
-
-Select Relevance
-    Run Keyword And Ignore Error    Click Element     //div[@id="toggle_buses" and not(contains(@class,'active'))]
-    Wait Until Element Is Visible  //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
-    Click Element   //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
-
-verify relevance is not toggled
-    Click Element   //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]
-    ${is_selected}    Run Keyword And Return Status    Element Should Be Visible    //div[@class="makeFlex hrtlCenter"]//li[contains(text(), 'Relevance')]/span[contains(@class,"appendLeft6")]
-    Should Be True    ${is_selected}    Relevance button should not toggle back to an upward arrow
+        END  
