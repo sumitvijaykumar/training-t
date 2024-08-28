@@ -22,7 +22,7 @@ pickup_point_filter:
     Place: Ettimadai
 
 
-Ac_nonac_filter:
+ac_nonac_filter:
   TC_001:
     FROM: Coimbatore 
     TO: Trivandrum
@@ -30,6 +30,9 @@ Ac_nonac_filter:
   TC_002:
     FROM: Coimbatore 
     TO: Trivandrum
+  TC_003:
+      FROM: coimbatore
+      TO: Trivandrum
 
 
 operator_filter:
