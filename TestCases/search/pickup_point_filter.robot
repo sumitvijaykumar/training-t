@@ -34,7 +34,7 @@ TC_002
 
 TC_003
     Open is my trip
-    Search Bus    Bangalore    Ernakulam     30 August   
+    Search Bus    Bangalore    Ernakulam    30         
     Filter bus according to pickup point    Boarding Points    Chinnappanahalli        
 
 *** Keywords ***
@@ -47,7 +47,7 @@ Open is my trip
 Search Bus
     [Arguments]    ${from}    ${to}    ${date}=today
 
-     ${day}    ${month}    Split String    ${date}    ${SPACE}
+    #  ${day}    ${month}    Split String    ${date}    ${SPACE}
 
     Wait Until Element Is Visible    //li[@class='bus mainMenu']   10s
     Click Element    //li[@class='bus mainMenu']
@@ -65,7 +65,9 @@ Search Bus
     
     Click Element    datepicker
     Wait Until Element Is Visible    //table[contains(@class,"calendar")]
-    ${datelocator}    Set Variable If    '${date}' == 'today'    //a[contains(@class,'ui-state-active')]    //span[text()='${month}']/../../following-sibling::table//a[contains(@class,'ui-state-') and (text()='${day}')]
+    ${datelocator}  Set Variable If   "'${date}'' == 'today'"
+    ...    //td[contains(@class,'current-day')]
+    ...    //a[contains(@class,'ui-state-default') and text()='${date}']
     Click Element    ${datelocator}
     Click Element    srcbtn
     Sleep    10s
