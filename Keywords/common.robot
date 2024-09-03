@@ -13,7 +13,6 @@ Open Make My Trip As
     Click Element    ${popup_signup}
 
 Select Filter
-
     [Arguments]     ${filterType}       ${filterExactText}=''
     ${filterExactTextFinal}          Set Variable If    ${filterExactText}==''      ${${SUITE_NAME}.${TEST_NAME}.VALUE}          ${filterExactText}
     # take the initial count
