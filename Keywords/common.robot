@@ -2,14 +2,15 @@
 Library     SeleniumLibrary
 Library    collections
 Library    String
+Resource   ${EXECDIR}/POM/pom_common.robot
 
 *** Keywords ***
 
 Open Make My Trip As
     Open Browser  browser=chrome        url=https://www.makemytrip.com
     Maximize Browser Window
-    Wait Until Element Is Visible  //span[@class='commonModal__close']   10s
-    Click Element    //span[@class='commonModal__close']
+    Wait Until Element Is Visible  ${popup_signup}   10s
+    Click Element    ${popup_signup}
 
 Select Filter
 
