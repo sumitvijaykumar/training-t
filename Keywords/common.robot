@@ -7,7 +7,7 @@ Resource   ${EXECDIR}/POM/pom_common.robot
 *** Keywords ***
 
 Open Make My Trip As
-    Open Browser  browser=chrome        url=https://www.makemytrip.com
+    Open Browser  browser=chrome        url=${url}
     Maximize Browser Window
     Wait Until Element Is Visible  ${popup_signup}   10s
     Click Element    ${popup_signup}
